@@ -1,5 +1,7 @@
 package com.shruti.ecommerce.wallet.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,8 +12,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Product name cannot be empty")
     private String name;
 
+    @Positive(message = "Price should be greater than zero")
     private double price;
 
     public Product() {

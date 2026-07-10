@@ -1,5 +1,6 @@
 package com.shruti.ecommerce.wallet.service;
 
+import com.shruti.ecommerce.wallet.exception.ProductNotFoundException;
 import com.shruti.ecommerce.wallet.model.Product;
 import com.shruti.ecommerce.wallet.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,10 @@ public class ProductService {
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+
+        return productRepository.findById(id)
+                .orElseThrow(() ->
+                        new ProductNotFoundException("Product not found with id: " + id));
     }
 
     public Product updateProduct(Long id, Product updatedProduct) {
