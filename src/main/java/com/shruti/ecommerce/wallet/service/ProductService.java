@@ -4,6 +4,8 @@ import com.shruti.ecommerce.wallet.exception.ProductNotFoundException;
 import com.shruti.ecommerce.wallet.model.Product;
 import com.shruti.ecommerce.wallet.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import com.shruti.ecommerce.wallet.dto.ProductRequestDTO;
+import com.shruti.ecommerce.wallet.dto.ProductResponseDTO;
 
 import java.util.List;
 
@@ -17,32 +19,62 @@ public class ProductService {
     }
 
     // Save Product
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public ProductResponseDTO saveProduct(ProductRequestDTO requestDTO) {
+
+        Product product = new Product();
+
+        product.setName(requestDTO.getName());
+        product.setPrice(requestDTO.getPrice());
+
+        Product savedProduct = productRepository.save(product);
+
+        return new ProductResponseDTO(
+                savedProduct.getId(),
+                savedProduct.getName(),
+                savedProduct.getPrice()
+        );
     }
 
     // Get All Products
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseDTO> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(product -> new ProductResponseDTO(
+                        product.getId(),
+                        product.getName(),
+                        product.getPrice()
+                ))
+                .toList();
     }
 
-    public Product getProductById(Long id) {
+    public ProductResponseDTO getProductById(Long id){
 
-        return productRepository.findById(id)
-                .orElseThrow(() ->
-                        new ProductNotFoundException("Product not found with id: " + id));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+
+        return new ProductResponseDTO(
+                product.getId(),
+                product.getName(),
+                product.getPrice()
+        );
     }
 
-    public Product updateProduct(Long id, Product updatedProduct) {
+    public ProductResponseDTO updateProduct(Long id, ProductRequestDTO requestDTO) {
 
         Product existingProduct = productRepository.findById(id).orElse(null);
 
         if(existingProduct != null){
 
-            existingProduct.setName(updatedProduct.getName());
-            existingProduct.setPrice(updatedProduct.getPrice());
+            existingProduct.setName(requestDTO.getName());
+            existingProduct.setPrice(requestDTO.getPrice());
 
-            return productRepository.save(existingProduct);
+            Product savedProduct = productRepository.save(existingProduct);
+
+            return new ProductResponseDTO(
+                    savedProduct.getId(),
+                    savedProduct.getName(),
+                    savedProduct.getPrice()
+            );
         }
 
         return null;

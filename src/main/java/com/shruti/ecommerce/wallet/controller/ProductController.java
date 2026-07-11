@@ -1,5 +1,7 @@
 package com.shruti.ecommerce.wallet.controller;
 
+import com.shruti.ecommerce.wallet.dto.ProductRequestDTO;
+import com.shruti.ecommerce.wallet.dto.ProductResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,39 +22,38 @@ public class ProductController {
     }
 
     // POST API
-    @PostMapping
-    public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product){
+    public ResponseEntity<ProductResponseDTO> addProduct(
+            @Valid @RequestBody ProductRequestDTO requestDTO) {
 
-        Product savedProduct = productService.saveProduct(product);
+        ProductResponseDTO savedProduct = productService.saveProduct(requestDTO);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(savedProduct);
     }
-
     // GET API
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<List<ProductResponseDTO>> getProducts() {
 
-        List<Product> products = productService.getAllProducts();
+        List<ProductResponseDTO> products = productService.getAllProducts();
 
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id){
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
 
-        Product product = productService.getProductById(id);
+        ProductResponseDTO product = productService.getProductById(id);
 
         return ResponseEntity.ok(product);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(
+    public ResponseEntity<ProductResponseDTO> updateProduct(
             @PathVariable Long id,
-            @Valid @RequestBody Product product){
+            @Valid @RequestBody ProductRequestDTO requestDTO) {
 
-        Product updatedProduct = productService.updateProduct(id, product);
+        ProductResponseDTO updatedProduct = productService.updateProduct(id, requestDTO);;
 
         return ResponseEntity.ok(updatedProduct);
     }
