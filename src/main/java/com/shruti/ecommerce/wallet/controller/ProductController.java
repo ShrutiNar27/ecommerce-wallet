@@ -5,7 +5,6 @@ import com.shruti.ecommerce.wallet.dto.ProductResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.shruti.ecommerce.wallet.model.Product;
 import com.shruti.ecommerce.wallet.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +21,7 @@ public class ProductController {
     }
 
     // POST API
+    @PostMapping
     public ResponseEntity<ProductResponseDTO> addProduct(
             @Valid @RequestBody ProductRequestDTO requestDTO) {
 

@@ -6,11 +6,16 @@ import com.shruti.ecommerce.wallet.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import com.shruti.ecommerce.wallet.dto.ProductRequestDTO;
 import com.shruti.ecommerce.wallet.dto.ProductResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Service
 public class ProductService {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
 
@@ -21,6 +26,8 @@ public class ProductService {
     // Save Product
     public ProductResponseDTO saveProduct(ProductRequestDTO requestDTO) {
 
+        logger.info("Saving new product: {}", requestDTO.getName());
+
         Product product = new Product();
 
         product.setName(requestDTO.getName());
@@ -28,38 +35,49 @@ public class ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        return new ProductResponseDTO(
-                savedProduct.getId(),
-                savedProduct.getName(),
-                savedProduct.getPrice()
-        );
+        logger.info("Product saved successfully with ID: {}", savedProduct.getId());
+
+        return ProductResponseDTO.builder()
+                .id(savedProduct.getId())
+                .name(savedProduct.getName())
+                .price(savedProduct.getPrice())
+                .build();
     }
 
     // Get All Products
     public List<ProductResponseDTO> getAllProducts() {
+
+        logger.info("Fetching all products");
+
         return productRepository.findAll()
                 .stream()
-                .map(product -> new ProductResponseDTO(
-                        product.getId(),
-                        product.getName(),
-                        product.getPrice()
-                ))
+                .map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .build())
                 .toList();
     }
 
     public ProductResponseDTO getProductById(Long id){
 
+        logger.info("Fetching product with ID: {}", id);
+
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
 
-        return new ProductResponseDTO(
-                product.getId(),
-                product.getName(),
-                product.getPrice()
-        );
+        logger.info("Product found with ID: {}", id);
+
+        return ProductResponseDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .build();
     }
 
     public ProductResponseDTO updateProduct(Long id, ProductRequestDTO requestDTO) {
+
+        logger.info("Updating product with ID: {}", id);
 
         Product existingProduct = productRepository.findById(id).orElse(null);
 
@@ -70,11 +88,13 @@ public class ProductService {
 
             Product savedProduct = productRepository.save(existingProduct);
 
-            return new ProductResponseDTO(
-                    savedProduct.getId(),
-                    savedProduct.getName(),
-                    savedProduct.getPrice()
-            );
+            logger.info("Product updated successfully with ID: {}", id);
+
+            return ProductResponseDTO.builder()
+                    .id(savedProduct.getId())
+                    .name(savedProduct.getName())
+                    .price(savedProduct.getPrice())
+                    .build();
         }
 
         return null;
@@ -82,11 +102,19 @@ public class ProductService {
 
     public String deleteProduct(Long id){
 
+        logger.info("Deleting product with ID: {}", id);
+
         if(productRepository.existsById(id)){
+
             productRepository.deleteById(id);
+
+            logger.info("Product deleted successfully with ID: {}", id);
+
             return "Product Deleted Successfully";
         }
 
-        return "Product Not Found";
+        logger.warn("Product with ID {} not found", id);
+
+        throw new ProductNotFoundException("Product Not Found");
     }
 }
