@@ -3,6 +3,7 @@ package com.shruti.ecommerce.wallet.controller;
 import com.shruti.ecommerce.wallet.dto.ProductRequestDTO;
 import com.shruti.ecommerce.wallet.dto.ProductResponseDTO;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.shruti.ecommerce.wallet.service.ProductService;
@@ -64,5 +65,27 @@ public class ProductController {
         String message = productService.deleteProduct(id);
 
         return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/page")
+    public Page<ProductResponseDTO> getProducts(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String field,
+            @RequestParam String direction) {
+
+        return productService.getProducts(
+                page,
+                size,
+                field,
+                direction);
+    }
+
+    @GetMapping("/sort")
+    public List<ProductResponseDTO> getProductsSorted(
+            @RequestParam String field,
+            @RequestParam String direction) {
+
+        return productService.getProductsSorted(field, direction);
     }
 }

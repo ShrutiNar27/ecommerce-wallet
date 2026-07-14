@@ -3,6 +3,10 @@ package com.shruti.ecommerce.wallet.service;
 import com.shruti.ecommerce.wallet.exception.ProductNotFoundException;
 import com.shruti.ecommerce.wallet.model.Product;
 import com.shruti.ecommerce.wallet.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.shruti.ecommerce.wallet.dto.ProductRequestDTO;
 import com.shruti.ecommerce.wallet.dto.ProductResponseDTO;
@@ -116,5 +120,53 @@ public class ProductService {
         logger.warn("Product with ID {} not found", id);
 
         throw new ProductNotFoundException("Product Not Found");
+    }
+
+    public Page<ProductResponseDTO> getProducts(
+            int page,
+            int size,
+            String field,
+            String direction) {
+
+        Sort sort;
+
+        if (direction.equalsIgnoreCase("desc")) {
+            sort = Sort.by(field).descending();
+        } else {
+            sort = Sort.by(field).ascending();
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Product> productPage = productRepository.findAll(pageable);
+
+        return productPage.map(product ->
+                ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .build());
+    }
+
+
+    public List<ProductResponseDTO> getProductsSorted(String field, String direction) {
+
+        Sort sort;
+
+        if (direction.equalsIgnoreCase("desc")) {
+            sort = Sort.by(field).descending();
+        } else {
+            sort = Sort.by(field).ascending();
+        }
+
+        List<Product> products = productRepository.findAll(sort);
+
+        return products.stream()
+                .map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .build())
+                .toList();
     }
 }
