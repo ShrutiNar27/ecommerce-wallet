@@ -6,6 +6,7 @@ import com.shruti.ecommerce.wallet.dto.UserRequestDTO;
 import com.shruti.ecommerce.wallet.dto.UserResponseDTO;
 import com.shruti.ecommerce.wallet.model.User;
 import com.shruti.ecommerce.wallet.repository.UserRepository;
+import com.shruti.ecommerce.wallet.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
+
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public UserResponseDTO registerUser(UserRequestDTO requestDTO) {
@@ -52,8 +57,10 @@ public class UserService {
             throw new RuntimeException("Invalid Email or Password");
         }
 
+        String token = jwtService.generateToken(user.getEmail());
+
         return LoginResponseDTO.builder()
-                .message("Login Successful")
+                .token(token)
                 .build();
     }
 }
