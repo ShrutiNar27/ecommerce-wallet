@@ -22,22 +22,29 @@ public class JwtService {
         );
     }
 
-    public String generateToken(String email){
+    public String generateAccessToken(String email) {
 
         return Jwts.builder()
-
                 .setSubject(email)
-
                 .setIssuedAt(new Date())
-
                 .setExpiration(
-                        new Date(System.currentTimeMillis()+1000*60*60)
+                        new Date(System.currentTimeMillis() + 1000 * 60 * 15)
                 )
-
                 .signWith(getSigningKey())
-
                 .compact();
+    }
 
+    public String generateRefreshToken(String email) {
+
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(
+                        new Date(System.currentTimeMillis()
+                                + 1000L * 60 * 60 * 24 * 7)
+                )
+                .signWith(getSigningKey())
+                .compact();
     }
 
     public String extractUsername(String token) {

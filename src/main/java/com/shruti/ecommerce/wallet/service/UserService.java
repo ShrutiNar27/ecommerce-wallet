@@ -1,12 +1,11 @@
 package com.shruti.ecommerce.wallet.service;
 
-import com.shruti.ecommerce.wallet.dto.LoginRequestDTO;
-import com.shruti.ecommerce.wallet.dto.LoginResponseDTO;
-import com.shruti.ecommerce.wallet.dto.UserRequestDTO;
-import com.shruti.ecommerce.wallet.dto.UserResponseDTO;
+import com.shruti.ecommerce.wallet.dto.*;
 import com.shruti.ecommerce.wallet.model.User;
 import com.shruti.ecommerce.wallet.repository.UserRepository;
+import com.shruti.ecommerce.wallet.security.CustomUserDetailsService;
 import com.shruti.ecommerce.wallet.security.JwtService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +15,19 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       JwtService jwtService) {
+                       JwtService jwtService,
+                       CustomUserDetailsService customUserDetailsService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.customUserDetailsService = customUserDetailsService;
     }
+
 
     public UserResponseDTO registerUser(UserRequestDTO requestDTO) {
 
@@ -32,6 +35,7 @@ public class UserService {
                 .name(requestDTO.getName())
                 .email(requestDTO.getEmail())
                 .password(passwordEncoder.encode(requestDTO.getPassword()))
+                .role("USER")
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -57,10 +61,38 @@ public class UserService {
             throw new RuntimeException("Invalid Email or Password");
         }
 
-        String token = jwtService.generateToken(user.getEmail());
+        String accessToken =
+                jwtService.generateAccessToken(user.getEmail());
+
+        String refreshToken =
+                jwtService.generateRefreshToken(user.getEmail());
 
         return LoginResponseDTO.builder()
-                .token(token)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public LoginResponseDTO refreshToken(
+            RefreshRequestDTO requestDTO) {
+
+        String refreshToken = requestDTO.getRefreshToken();
+
+        String email = jwtService.extractUsername(refreshToken);
+
+        UserDetails userDetails =
+                customUserDetailsService.loadUserByUsername(email);
+
+        if (!jwtService.validateToken(refreshToken, userDetails)) {
+            throw new RuntimeException("Invalid Refresh Token");
+        }
+
+        String newAccessToken =
+                jwtService.generateAccessToken(email);
+
+        return LoginResponseDTO.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 }

@@ -1,10 +1,8 @@
 package com.shruti.ecommerce.wallet.controller;
 
-import com.shruti.ecommerce.wallet.dto.LoginRequestDTO;
-import com.shruti.ecommerce.wallet.dto.LoginResponseDTO;
-import com.shruti.ecommerce.wallet.dto.UserRequestDTO;
-import com.shruti.ecommerce.wallet.dto.UserResponseDTO;
+import com.shruti.ecommerce.wallet.dto.*;
 import com.shruti.ecommerce.wallet.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> registerUser(
-            @RequestBody UserRequestDTO requestDTO) {
+            @Valid @RequestBody UserRequestDTO requestDTO) {
 
         UserResponseDTO responseDTO =
                 userService.registerUser(requestDTO);
@@ -35,6 +33,16 @@ public class UserController {
 
         LoginResponseDTO response =
                 userService.login(requestDTO);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponseDTO> refreshToken(
+            @RequestBody RefreshRequestDTO requestDTO) {
+
+        LoginResponseDTO response =
+                userService.refreshToken(requestDTO);
 
         return ResponseEntity.ok(response);
     }
