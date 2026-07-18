@@ -32,12 +32,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/users/register",
+                        .requestMatchers("/users/register",
                                 "/users/login",
                                 "/users/refresh",
-                                "/categories/**"
-                        ).permitAll()
+                                "/categories/**")
+                        .permitAll()
+
+                        .requestMatchers("/cart/**")
+                        .authenticated()
 
                         .requestMatchers(HttpMethod.GET, "/products/**")
                         .hasAnyRole("USER", "ADMIN")
@@ -50,9 +52,6 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.DELETE, "/products/**")
                         .hasRole("ADMIN")
-
-                        .requestMatchers("/cart/**")
-                        .authenticated()
 
                         .anyRequest().authenticated()
                 )

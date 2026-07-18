@@ -2,6 +2,7 @@ package com.shruti.ecommerce.wallet.service;
 
 import com.shruti.ecommerce.wallet.dto.CartItemResponseDTO;
 import com.shruti.ecommerce.wallet.dto.CartResponseDTO;
+import com.shruti.ecommerce.wallet.dto.CartUpdateRequestDTO;
 import com.shruti.ecommerce.wallet.exception.ProductNotFoundException;
 import com.shruti.ecommerce.wallet.model.Cart;
 import com.shruti.ecommerce.wallet.model.CartItem;
@@ -90,14 +91,19 @@ public class CartService {
         Cart updatedCart = cartRepository.findById(cart.getId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
-        double totalAmount = updatedCart.getCartItems()
+        return buildCartResponse(updatedCart);
+    }
+
+    private CartResponseDTO buildCartResponse(Cart cart) {
+
+        double totalAmount = cart.getCartItems()
                 .stream()
                 .mapToDouble(CartItem::getSubtotal)
                 .sum();
 
         return CartResponseDTO.builder()
-                .cartId(updatedCart.getId())
-                .items(updatedCart.getCartItems()
+                .cartId(cart.getId())
+                .items(cart.getCartItems()
                         .stream()
                         .map(item -> CartItemResponseDTO.builder()
                                 .productId(item.getProduct().getId())
@@ -109,5 +115,78 @@ public class CartService {
                         .toList())
                 .totalAmount(totalAmount)
                 .build();
+    }
+
+    public CartResponseDTO getCart() {
+
+        User user = getLoggedInUser();
+
+        Cart cart = cartRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        return buildCartResponse(cart);
+    }
+
+    public CartResponseDTO updateCartItem(Long productId,
+                                          CartUpdateRequestDTO requestDTO) {
+
+        User user = getLoggedInUser();
+
+        Cart cart = cartRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        CartItem cartItem = cartItemRepository
+                .findByCartAndProduct(cart, product)
+                .orElseThrow(() -> new RuntimeException("Product not found in cart"));
+
+        cartItem.setQuantity(requestDTO.getQuantity());
+
+        cartItem.setSubtotal(
+                requestDTO.getQuantity() * product.getPrice());
+
+        cartItemRepository.save(cartItem);
+
+        Cart updatedCart = cartRepository.findById(cart.getId())
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        return buildCartResponse(updatedCart);
+    }
+
+    public String removeFromCart(Long productId) {
+
+        User user = getLoggedInUser();
+
+        Cart cart = cartRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ProductNotFoundException("Product not found"));
+
+        CartItem cartItem = cartItemRepository
+                .findByCartAndProduct(cart, product)
+                .orElseThrow(() ->
+                        new RuntimeException("Product not found in cart"));
+
+        cart.getCartItems().remove(cartItem);
+
+        cartItemRepository.delete(cartItem);
+
+        return "Product removed from cart successfully";
+    }
+
+    public String clearCart() {
+
+        User user = getLoggedInUser();
+
+        Cart cart = cartRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+
+        cartItemRepository.deleteAllByCart(cart);
+
+        return "Cart cleared successfully";
     }
 }
