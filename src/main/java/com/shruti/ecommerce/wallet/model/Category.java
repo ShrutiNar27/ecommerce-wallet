@@ -2,6 +2,9 @@ package com.shruti.ecommerce.wallet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -20,4 +23,8 @@ public class Category {
     private String name;
 
     private String description;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<Product> products;
 }

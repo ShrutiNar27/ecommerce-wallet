@@ -1,5 +1,7 @@
 package com.shruti.ecommerce.wallet.service;
 
+import com.shruti.ecommerce.wallet.model.Category;
+import com.shruti.ecommerce.wallet.repository.CategoryRepository;
 import com.shruti.ecommerce.wallet.exception.ProductNotFoundException;
 import com.shruti.ecommerce.wallet.model.Product;
 import com.shruti.ecommerce.wallet.repository.ProductRepository;
@@ -23,19 +25,29 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    private final CategoryRepository categoryRepository;
+
+    public ProductService(ProductRepository productRepository,
+                          CategoryRepository categoryRepository) {
+
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
+
 
     // Save Product
     public ProductResponseDTO saveProduct(ProductRequestDTO requestDTO) {
 
         logger.info("Saving new product: {}", requestDTO.getName());
 
+        Category category = categoryRepository.findById(requestDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
         Product product = new Product();
 
         product.setName(requestDTO.getName());
         product.setPrice(requestDTO.getPrice());
+        product.setCategory(category);
 
         Product savedProduct = productRepository.save(product);
 
@@ -45,6 +57,8 @@ public class ProductService {
                 .id(savedProduct.getId())
                 .name(savedProduct.getName())
                 .price(savedProduct.getPrice())
+                .categoryId(savedProduct.getCategory().getId())
+                .categoryName(savedProduct.getCategory().getName())
                 .build();
     }
 
@@ -59,11 +73,13 @@ public class ProductService {
                         .id(product.getId())
                         .name(product.getName())
                         .price(product.getPrice())
+                        .categoryId(product.getCategory().getId())
+                        .categoryName(product.getCategory().getName())
                         .build())
                 .toList();
     }
 
-    public ProductResponseDTO getProductById(Long id){
+    public ProductResponseDTO getProductById(Long id) {
 
         logger.info("Fetching product with ID: {}", id);
 
@@ -76,6 +92,8 @@ public class ProductService {
                 .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
+                .categoryId(product.getCategory().getId())
+                .categoryName(product.getCategory().getName())
                 .build();
     }
 
@@ -85,10 +103,15 @@ public class ProductService {
 
         Product existingProduct = productRepository.findById(id).orElse(null);
 
-        if(existingProduct != null){
+        if (existingProduct != null) {
 
             existingProduct.setName(requestDTO.getName());
             existingProduct.setPrice(requestDTO.getPrice());
+
+            Category category = categoryRepository.findById(requestDTO.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+
+            existingProduct.setCategory(category);
 
             Product savedProduct = productRepository.save(existingProduct);
 
@@ -98,17 +121,19 @@ public class ProductService {
                     .id(savedProduct.getId())
                     .name(savedProduct.getName())
                     .price(savedProduct.getPrice())
+                    .categoryId(savedProduct.getCategory().getId())
+                    .categoryName(savedProduct.getCategory().getName())
                     .build();
         }
 
         return null;
     }
 
-    public String deleteProduct(Long id){
+    public String deleteProduct(Long id) {
 
         logger.info("Deleting product with ID: {}", id);
 
-        if(productRepository.existsById(id)){
+        if (productRepository.existsById(id)) {
 
             productRepository.deleteById(id);
 
@@ -145,6 +170,8 @@ public class ProductService {
                         .id(product.getId())
                         .name(product.getName())
                         .price(product.getPrice())
+                        .categoryId(product.getCategory().getId())
+                        .categoryName(product.getCategory().getName())
                         .build());
     }
 
@@ -166,6 +193,8 @@ public class ProductService {
                         .id(product.getId())
                         .name(product.getName())
                         .price(product.getPrice())
+                        .categoryId(product.getCategory().getId())
+                        .categoryName(product.getCategory().getName())
                         .build())
                 .toList();
     }

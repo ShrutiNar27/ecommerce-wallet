@@ -18,4 +18,7 @@ public class ProductRequestDTO {
     @NotNull(message = "Price cannot be null")
     @Min(value = 1, message = "Price must be greater than 0")
     private Double price;
+
+    @NotNull(message = "Category is required")
+    private Long categoryId;
 }
