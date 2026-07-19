@@ -35,11 +35,16 @@ public class SecurityConfig {
                         .requestMatchers("/users/register",
                                 "/users/login",
                                 "/users/refresh",
-                                "/categories/**")
+                                "/categories/**",
+                                "/orders/checkout")
                         .permitAll()
 
-                        .requestMatchers("/cart/**")
-                        .authenticated()
+                        .requestMatchers("/orders/checkout").permitAll()
+
+                        //.requestMatchers("/cart/**")
+                        //.authenticated()
+
+                        //.requestMatchers("/orders/**").authenticated()
 
                         .requestMatchers(HttpMethod.GET, "/products/**")
                         .hasAnyRole("USER", "ADMIN")

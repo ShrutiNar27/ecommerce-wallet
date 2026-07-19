@@ -18,6 +18,7 @@ public class CartController {
 
     @PostMapping("/add/{productId}")
     public CartResponseDTO addToCart(@PathVariable Long productId) {
+
         return cartService.addToCart(productId);
     }
 
