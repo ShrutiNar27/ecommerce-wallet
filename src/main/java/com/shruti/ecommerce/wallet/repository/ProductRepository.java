@@ -12,7 +12,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByPriceGreaterThan(Double price);
 
-    List<Product> findByNameContaining(String keyword);
+    List<Product> findByNameContainingIgnoreCase(String keyword);
+
+    List<Product> findByCategoryId(Long categoryId);
+
+    List<Product> findByPriceBetween(Double minPrice, Double maxPrice);
+
+    List<Product> findByCategoryIdAndPriceBetween(
+            Long categoryId,
+            Double minPrice,
+            Double maxPrice);
 
     @Query("SELECT p FROM Product p WHERE p.name = :name")
     List<Product> getProductsByName(@Param("name") String name);

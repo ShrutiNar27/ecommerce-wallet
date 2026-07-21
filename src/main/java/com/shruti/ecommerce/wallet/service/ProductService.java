@@ -198,4 +198,84 @@ public class ProductService {
                         .build())
                 .toList();
     }
+
+    public List<ProductResponseDTO> searchProducts(String keyword) {
+
+        logger.info("Searching products with keyword: {}", keyword);
+
+        List<Product> products = productRepository
+                .findByNameContainingIgnoreCase(keyword);
+
+        return products.stream()
+                .map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .categoryId(product.getCategory().getId())
+                        .categoryName(product.getCategory().getName())
+                        .build())
+                .toList();
+    }
+
+    public List<ProductResponseDTO> filterProductsByCategory(Long categoryId) {
+
+        logger.info("Filtering products by category ID: {}", categoryId);
+
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+
+        return products.stream()
+                .map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .categoryId(product.getCategory().getId())
+                        .categoryName(product.getCategory().getName())
+                        .build())
+                .toList();
+    }
+
+    public List<ProductResponseDTO> filterProductsByPrice(
+            Double minPrice,
+            Double maxPrice) {
+
+        logger.info("Filtering products between {} and {}", minPrice, maxPrice);
+
+        List<Product> products =
+                productRepository.findByPriceBetween(minPrice, maxPrice);
+
+        return products.stream()
+                .map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .categoryId(product.getCategory().getId())
+                        .categoryName(product.getCategory().getName())
+                        .build())
+                .toList();
+    }
+
+    public List<ProductResponseDTO> filterProducts(
+            Long categoryId,
+            Double minPrice,
+            Double maxPrice) {
+
+        logger.info("Filtering products by category {} and price between {} and {}",
+                categoryId, minPrice, maxPrice);
+
+        List<Product> products =
+                productRepository.findByCategoryIdAndPriceBetween(
+                        categoryId,
+                        minPrice,
+                        maxPrice);
+
+        return products.stream()
+                .map(product -> ProductResponseDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .categoryId(product.getCategory().getId())
+                        .categoryName(product.getCategory().getName())
+                        .build())
+                .toList();
+    }
 }

@@ -41,6 +41,36 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponseDTO>> searchProducts(
+            @RequestParam String keyword) {
+
+        List<ProductResponseDTO> products = productService.searchProducts(keyword);
+
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter/category")
+    public ResponseEntity<List<ProductResponseDTO>> filterProductsByCategory(
+            @RequestParam Long categoryId) {
+
+        List<ProductResponseDTO> products =
+                productService.filterProductsByCategory(categoryId);
+
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/filter/price")
+    public ResponseEntity<List<ProductResponseDTO>> filterProductsByPrice(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice) {
+
+        List<ProductResponseDTO> products =
+                productService.filterProductsByPrice(minPrice, maxPrice);
+
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Long id) {
 
@@ -87,5 +117,17 @@ public class ProductController {
             @RequestParam String direction) {
 
         return productService.getProductsSorted(field, direction);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ProductResponseDTO>> filterProducts(
+            @RequestParam Long categoryId,
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice) {
+
+        List<ProductResponseDTO> products =
+                productService.filterProducts(categoryId, minPrice, maxPrice);
+
+        return ResponseEntity.ok(products);
     }
 }
