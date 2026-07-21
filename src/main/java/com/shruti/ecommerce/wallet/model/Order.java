@@ -1,5 +1,7 @@
 package com.shruti.ecommerce.wallet.model;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +25,8 @@ public class Order {
 
     private Double totalAmount;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -1,5 +1,6 @@
 package com.shruti.ecommerce.wallet.dto;
 
+import com.shruti.ecommerce.wallet.model.OrderStatus;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class OrderResponseDTO {
 
     private LocalDateTime orderDate;
 
-    private String status;
+    private OrderStatus status;
 
     private Double totalAmount;
 

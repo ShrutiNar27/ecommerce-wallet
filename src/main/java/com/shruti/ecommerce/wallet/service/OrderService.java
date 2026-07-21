@@ -59,7 +59,7 @@ public class OrderService {
         Order order = Order.builder()
                 .user(user)
                 .orderDate(LocalDateTime.now())
-                .status("PLACED")
+                .status(OrderStatus.PLACED)
                 .totalAmount(0.0)
                 .build();
 
