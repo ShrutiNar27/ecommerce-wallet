@@ -1,5 +1,6 @@
 package com.shruti.ecommerce.wallet.controller;
 
+import com.shruti.ecommerce.wallet.dto.PayWithWalletRequestDTO;
 import com.shruti.ecommerce.wallet.dto.DepositRequestDTO;
 import com.shruti.ecommerce.wallet.dto.WalletResponseDTO;
 import com.shruti.ecommerce.wallet.dto.WalletTransactionResponseDTO;
@@ -44,5 +45,12 @@ public class WalletController {
             @RequestBody @Valid WithdrawRequestDTO requestDTO) {
 
         return ResponseEntity.ok(walletService.withdrawMoney(requestDTO));
+    }
+
+    @PostMapping("/pay")
+    public ResponseEntity<WalletResponseDTO> payWithWallet(
+            @RequestBody @Valid PayWithWalletRequestDTO requestDTO) {
+
+        return ResponseEntity.ok(walletService.payWithWallet(requestDTO));
     }
 }

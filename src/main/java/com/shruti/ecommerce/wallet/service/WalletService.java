@@ -1,12 +1,15 @@
 package com.shruti.ecommerce.wallet.service;
 
+import com.shruti.ecommerce.wallet.dto.PayWithWalletRequestDTO;
+import com.shruti.ecommerce.wallet.model.Order;
+import com.shruti.ecommerce.wallet.model.OrderStatus;
+import com.shruti.ecommerce.wallet.repository.OrderRepository;
 import com.shruti.ecommerce.wallet.dto.WalletTransactionResponseDTO;
 import com.shruti.ecommerce.wallet.dto.WithdrawRequestDTO;
-import com.shruti.ecommerce.wallet.model.TransactionType;
+import com.shruti.ecommerce.wallet.model.WalletTransactionType;
 import com.shruti.ecommerce.wallet.model.WalletTransaction;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import com.shruti.ecommerce.wallet.dto.DepositRequestDTO;
 import com.shruti.ecommerce.wallet.dto.WalletResponseDTO;
 import com.shruti.ecommerce.wallet.model.User;
@@ -24,14 +27,19 @@ public class WalletService {
     private final WalletRepository walletRepository;
     private final UserRepository userRepository;
     private final WalletTransactionRepository walletTransactionRepository;
+    private final OrderRepository orderRepository;
 
-    public WalletService(WalletRepository walletRepository,
-                         UserRepository userRepository,
-                         WalletTransactionRepository walletTransactionRepository) {
+    public WalletService(
+            WalletRepository walletRepository,
+            WalletTransactionRepository walletTransactionRepository,
+            UserRepository userRepository,
+            OrderRepository orderRepository
+    ) {
 
         this.walletRepository = walletRepository;
         this.userRepository = userRepository;
         this.walletTransactionRepository = walletTransactionRepository;
+        this.orderRepository = orderRepository;
     }
 
     private User getLoggedInUser() {
@@ -73,7 +81,7 @@ public class WalletService {
         WalletTransaction transaction = WalletTransaction.builder()
                 .wallet(updatedWallet)
                 .amount(requestDTO.getAmount())
-                .type(TransactionType.DEPOSIT)
+                .type(WalletTransactionType.DEPOSIT)
                 .description("Wallet Recharge")
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -105,7 +113,7 @@ public class WalletService {
         WalletTransaction transaction = WalletTransaction.builder()
                 .wallet(updatedWallet)
                 .amount(requestDTO.getAmount())
-                .type(TransactionType.WITHDRAW)
+                .type(WalletTransactionType.WITHDRAW)
                 .description("Wallet Withdrawal")
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -139,4 +147,43 @@ public class WalletService {
                 .toList();
     }
 
+    public WalletResponseDTO payWithWallet(PayWithWalletRequestDTO requestDTO) {
+
+        User user = getLoggedInUser();
+
+        Order order = orderRepository.findById(requestDTO.getOrderId())
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (!order.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You cannot pay for another user's order");
+        }
+
+        Wallet wallet = walletRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Wallet not found"));
+
+        if (wallet.getBalance() < order.getTotalAmount()) {
+            throw new RuntimeException("Insufficient wallet balance");
+        }
+
+        wallet.setBalance(wallet.getBalance() - order.getTotalAmount());
+        walletRepository.save(wallet);
+
+        WalletTransaction transaction = WalletTransaction.builder()
+                .wallet(wallet)
+                .amount(order.getTotalAmount())
+                .type(WalletTransactionType.PAYMENT)
+                .description("Order Payment")
+                .build();
+
+        walletTransactionRepository.save(transaction);
+
+        order.setStatus(OrderStatus.PAID);
+        orderRepository.save(order);
+
+        return WalletResponseDTO.builder()
+                .walletId(wallet.getId())
+                .balance(wallet.getBalance())
+                .userId(user.getId())
+                .build();
+    }
 }

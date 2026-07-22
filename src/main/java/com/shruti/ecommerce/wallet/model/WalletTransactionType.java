@@ -1,6 +1,6 @@
 package com.shruti.ecommerce.wallet.model;
 
-public enum TransactionType {
+public enum WalletTransactionType {
 
     DEPOSIT,
     WITHDRAW,

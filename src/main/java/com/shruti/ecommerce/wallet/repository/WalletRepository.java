@@ -10,5 +10,4 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
     Optional<Wallet> findByUser(User user);
 
-
 }

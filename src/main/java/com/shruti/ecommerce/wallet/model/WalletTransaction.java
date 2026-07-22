@@ -24,7 +24,7 @@ public class WalletTransaction {
     private Double amount;
 
     @Enumerated(EnumType.STRING)
-    private TransactionType type;
+    private WalletTransactionType type;
 
     private String description;
 
