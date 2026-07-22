@@ -3,6 +3,7 @@ package com.shruti.ecommerce.wallet.controller;
 import com.shruti.ecommerce.wallet.dto.DepositRequestDTO;
 import com.shruti.ecommerce.wallet.dto.WalletResponseDTO;
 import com.shruti.ecommerce.wallet.dto.WalletTransactionResponseDTO;
+import com.shruti.ecommerce.wallet.dto.WithdrawRequestDTO;
 import com.shruti.ecommerce.wallet.service.WalletService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,12 @@ public class WalletController {
     public ResponseEntity<List<WalletTransactionResponseDTO>> getTransactions() {
 
         return ResponseEntity.ok(walletService.getTransactions());
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<WalletResponseDTO> withdrawMoney(
+            @RequestBody @Valid WithdrawRequestDTO requestDTO) {
+
+        return ResponseEntity.ok(walletService.withdrawMoney(requestDTO));
     }
 }

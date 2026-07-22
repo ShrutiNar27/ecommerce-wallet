@@ -1,6 +1,7 @@
 package com.shruti.ecommerce.wallet.service;
 
 import com.shruti.ecommerce.wallet.dto.WalletTransactionResponseDTO;
+import com.shruti.ecommerce.wallet.dto.WithdrawRequestDTO;
 import com.shruti.ecommerce.wallet.model.TransactionType;
 import com.shruti.ecommerce.wallet.model.WalletTransaction;
 import java.time.LocalDateTime;
@@ -74,6 +75,38 @@ public class WalletService {
                 .amount(requestDTO.getAmount())
                 .type(TransactionType.DEPOSIT)
                 .description("Wallet Recharge")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        walletTransactionRepository.save(transaction);
+
+        return WalletResponseDTO.builder()
+                .walletId(updatedWallet.getId())
+                .balance(updatedWallet.getBalance())
+                .userId(user.getId())
+                .build();
+    }
+
+    public WalletResponseDTO withdrawMoney(WithdrawRequestDTO requestDTO) {
+
+        User user = getLoggedInUser();
+
+        Wallet wallet = walletRepository.findByUser(user)
+                .orElseThrow(() -> new RuntimeException("Wallet not found"));
+
+        if (wallet.getBalance() < requestDTO.getAmount()) {
+            throw new RuntimeException("Insufficient wallet balance");
+        }
+
+        wallet.setBalance(wallet.getBalance() - requestDTO.getAmount());
+
+        Wallet updatedWallet = walletRepository.save(wallet);
+
+        WalletTransaction transaction = WalletTransaction.builder()
+                .wallet(updatedWallet)
+                .amount(requestDTO.getAmount())
+                .type(TransactionType.WITHDRAW)
+                .description("Wallet Withdrawal")
                 .createdAt(LocalDateTime.now())
                 .build();
 
