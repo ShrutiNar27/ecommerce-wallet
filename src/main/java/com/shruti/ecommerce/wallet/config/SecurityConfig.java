@@ -46,6 +46,9 @@ public class SecurityConfig {
 
                         //.requestMatchers("/orders/**").authenticated()
 
+                        .requestMatchers("/wallet/**")
+                        .hasAnyRole("USER", "ADMIN")
+
                         .requestMatchers(HttpMethod.GET, "/products/**")
                         .hasAnyRole("USER", "ADMIN")
 

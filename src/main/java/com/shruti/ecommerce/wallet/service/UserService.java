@@ -1,8 +1,10 @@
 package com.shruti.ecommerce.wallet.service;
 
+import com.shruti.ecommerce.wallet.model.Wallet;
 import com.shruti.ecommerce.wallet.dto.*;
 import com.shruti.ecommerce.wallet.model.User;
 import com.shruti.ecommerce.wallet.repository.UserRepository;
+import com.shruti.ecommerce.wallet.repository.WalletRepository;
 import com.shruti.ecommerce.wallet.security.CustomUserDetailsService;
 import com.shruti.ecommerce.wallet.security.JwtService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final CustomUserDetailsService customUserDetailsService;
@@ -20,12 +23,14 @@ public class UserService {
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService,
-                       CustomUserDetailsService customUserDetailsService) {
+                       CustomUserDetailsService customUserDetailsService,
+                       WalletRepository walletRepository) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.customUserDetailsService = customUserDetailsService;
+        this.walletRepository = walletRepository;
     }
 
 
@@ -39,6 +44,13 @@ public class UserService {
                 .build();
 
         User savedUser = userRepository.save(user);
+
+        Wallet wallet = Wallet.builder()
+                .user(savedUser)
+                .balance(0.0)
+                .build();
+
+        walletRepository.save(wallet);
 
         return UserResponseDTO.builder()
                 .id(savedUser.getId())
