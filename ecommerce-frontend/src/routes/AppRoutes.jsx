@@ -1,3 +1,4 @@
+import ProductDetails from "@/pages/products/ProductDetails";
 import Products from "@/pages/products/Products";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -22,6 +23,7 @@ export default function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/:id" element={<ProductDetails />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
