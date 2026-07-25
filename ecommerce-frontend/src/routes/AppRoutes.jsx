@@ -1,3 +1,4 @@
+import Products from "@/pages/products/Products";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "../components/layout/MainLayout";
@@ -20,8 +21,10 @@ export default function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/products" element={<Products />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>
   );
 }
+
