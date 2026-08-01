@@ -1,59 +1,124 @@
-function ProductFilters() {
+import { useEffect, useState } from "react";
+
+import { getAllCategories } from "@/services/categoryService";
+
+function ProductFilters({
+  selectedCategory,
+  setSelectedCategory,
+  maxPrice,
+  setMaxPrice,
+}) {
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+
+    const fetchCategories = async () => {
+
+      try {
+
+        const data = await getAllCategories();
+
+        setCategories(data);
+
+      } catch (error) {
+
+        console.error("Failed to fetch categories:", error);
+
+      }
+
+    };
+
+    fetchCategories();
+
+  }, []);
+
   return (
     <div className="space-y-8">
 
       {/* Categories */}
+
       <div>
-        <h3 className="text-lg font-semibold mb-3">Category</h3>
+
+        <h3 className="text-lg font-semibold mb-3">
+          Category
+        </h3>
 
         <div className="space-y-2">
-          <label className="flex items-center gap-2">
-            <input type="checkbox" />
-            Electronics
-          </label>
 
           <label className="flex items-center gap-2">
-            <input type="checkbox" />
-            Fashion
+
+            <input
+              type="radio"
+              checked={selectedCategory === null}
+              onChange={() => setSelectedCategory(null)}
+            />
+
+            All Categories
+
           </label>
 
-          <label className="flex items-center gap-2">
-            <input type="checkbox" />
-            Home
-          </label>
+          {categories.map((category) => (
 
-          <label className="flex items-center gap-2">
-            <input type="checkbox" />
-            Books
-          </label>
+            <label
+              key={category.id}
+              className="flex items-center gap-2"
+            >
+
+              <input
+                type="radio"
+                checked={selectedCategory === category.id}
+                onChange={() =>
+                  setSelectedCategory(category.id)
+                }
+              />
+
+              {category.name}
+
+            </label>
+
+          ))}
+
         </div>
+
       </div>
 
       {/* Price */}
+
       <div>
+
         <h3 className="text-lg font-semibold mb-3">
-          Price
+          Maximum Price
         </h3>
 
         <input
           type="range"
           min="0"
           max="100000"
+          step="500"
+          value={maxPrice}
+          onChange={(e) =>
+            setMaxPrice(Number(e.target.value))
+          }
           className="w-full"
         />
 
         <p className="text-sm text-gray-500 mt-2">
-          ₹0 - ₹1,00,000
+          ₹0 - ₹{maxPrice.toLocaleString()}
         </p>
+
       </div>
 
       {/* Rating */}
+
       <div>
+
         <h3 className="text-lg font-semibold mb-3">
           Rating
         </h3>
 
         <div className="space-y-2">
+
           <label className="flex items-center gap-2">
             <input type="radio" name="rating" />
             4★ & above
@@ -68,7 +133,9 @@ function ProductFilters() {
             <input type="radio" name="rating" />
             2★ & above
           </label>
+
         </div>
+
       </div>
 
     </div>

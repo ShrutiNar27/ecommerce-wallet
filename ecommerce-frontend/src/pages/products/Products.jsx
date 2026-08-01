@@ -9,13 +9,19 @@ import ProductSort from "@/components/product/ProductSort";
 import {
   getAllProducts,
   searchProducts,
+  getProductsByCategory,
+  getProductsByPrice,
+  getFilteredProducts,
 } from "@/services/productService";
 
 function Products() {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [maxPrice, setMaxPrice] = useState(100000);
 
   useEffect(() => {
 
@@ -27,13 +33,39 @@ function Products() {
 
         let data;
 
-        if (searchTerm.trim() === "") {
+        if (
+          selectedCategory !== null &&
+          maxPrice < 100000
+        ) {
 
-          data = await getAllProducts();
+          data = await getFilteredProducts(
+            selectedCategory,
+            0,
+            maxPrice
+          );
+
+        } else if (selectedCategory !== null) {
+
+          data = await getProductsByCategory(
+            selectedCategory
+          );
+
+        } else if (maxPrice < 100000) {
+
+          data = await getProductsByPrice(
+            0,
+            maxPrice
+          );
+
+        } else if (searchTerm.trim() !== "") {
+
+          data = await searchProducts(
+            searchTerm
+          );
 
         } else {
 
-          data = await searchProducts(searchTerm);
+          data = await getAllProducts();
 
         }
 
@@ -41,7 +73,10 @@ function Products() {
 
       } catch (error) {
 
-        console.error("Failed to fetch products:", error);
+        console.error(
+          "Failed to fetch products:",
+          error
+        );
 
       } finally {
 
@@ -53,7 +88,7 @@ function Products() {
 
     fetchProducts();
 
-  }, [searchTerm]);
+  }, [searchTerm, selectedCategory, maxPrice]);
 
   if (loading) {
     return (
@@ -73,17 +108,24 @@ function Products() {
       <div className="grid grid-cols-12 gap-8">
 
         {/* Sidebar */}
+
         <aside className="col-span-3 bg-white rounded-xl shadow-md p-6">
 
           <h2 className="text-2xl font-semibold mb-6">
             Filters
           </h2>
 
-          <ProductFilters />
+          <ProductFilters
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            maxPrice={maxPrice}
+            setMaxPrice={setMaxPrice}
+          />
 
         </aside>
 
         {/* Products */}
+
         <section className="col-span-9">
 
           <div className="flex justify-between items-center gap-6 mb-8">
@@ -102,7 +144,7 @@ function Products() {
             {products.length > 0 ? (
               <ProductGrid products={products} />
             ) : (
-              <div className="text-center text-gray-500 py-10">
+              <div className="text-center py-10 text-gray-500">
                 No products found.
               </div>
             )}
