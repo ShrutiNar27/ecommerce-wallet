@@ -68,12 +68,13 @@ export const getSortedProducts = async (field, direction) => {
   return response.data;
 };
 
-export const getProductsPage = async (
-  page,
-  size,
-  field,
-  direction
-) => {
+export const getProductsPage = async ({
+  page = 0,
+  size = 6,
+  field = "name",
+  direction = "asc",
+}) => {
+
   const response = await api.get("/products/page", {
     params: {
       page,
@@ -84,4 +85,5 @@ export const getProductsPage = async (
   });
 
   return response.data;
+
 };

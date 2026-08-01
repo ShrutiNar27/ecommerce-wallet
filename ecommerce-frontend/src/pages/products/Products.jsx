@@ -6,13 +6,8 @@ import ProductFilters from "@/components/product/ProductFilters";
 import ProductSearch from "@/components/product/ProductSearch";
 import ProductSort from "@/components/product/ProductSort";
 
-import {
-  getAllProducts,
-  searchProducts,
-  getProductsByCategory,
-  getProductsByPrice,
-  getFilteredProducts,
-} from "@/services/productService";
+import { fetchProducts } from "@/services/productQueryService";
+import { getProductsPage } from "@/services/productService";
 
 function Products() {
 
@@ -22,61 +17,55 @@ function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [maxPrice, setMaxPrice] = useState(100000);
+  const [sortField, setSortField] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
 
-    const fetchProducts = async () => {
+    const loadProducts = async () => {
 
       try {
 
         setLoading(true);
 
-        let data;
-
+        // Use pagination only when no filters/search/sort are active
         if (
-          selectedCategory !== null &&
-          maxPrice < 100000
+          searchTerm === "" &&
+          selectedCategory === null &&
+          maxPrice === 100000 &&
+          sortField === ""
         ) {
 
-          data = await getFilteredProducts(
-            selectedCategory,
-            0,
-            maxPrice
-          );
+          const pageData = await getProductsPage({
+            page: currentPage,
+            size: 6,
+            field: "name",
+            direction: "asc",
+          });
 
-        } else if (selectedCategory !== null) {
-
-          data = await getProductsByCategory(
-            selectedCategory
-          );
-
-        } else if (maxPrice < 100000) {
-
-          data = await getProductsByPrice(
-            0,
-            maxPrice
-          );
-
-        } else if (searchTerm.trim() !== "") {
-
-          data = await searchProducts(
-            searchTerm
-          );
+          setProducts(pageData.content);
+          setTotalPages(pageData.totalPages);
 
         } else {
 
-          data = await getAllProducts();
+          const data = await fetchProducts({
+            searchTerm,
+            selectedCategory,
+            maxPrice,
+            sortField,
+          });
+
+          setProducts(data);
+          setTotalPages(1);
+          setCurrentPage(0);
 
         }
 
-        setProducts(data);
-
       } catch (error) {
 
-        console.error(
-          "Failed to fetch products:",
-          error
-        );
+        console.error("Failed to fetch products:", error);
 
       } finally {
 
@@ -86,9 +75,15 @@ function Products() {
 
     };
 
-    fetchProducts();
+    loadProducts();
 
-  }, [searchTerm, selectedCategory, maxPrice]);
+  }, [
+    currentPage,
+    searchTerm,
+    selectedCategory,
+    maxPrice,
+    sortField,
+  ]);
 
   if (loading) {
     return (
@@ -108,7 +103,6 @@ function Products() {
       <div className="grid grid-cols-12 gap-8">
 
         {/* Sidebar */}
-
         <aside className="col-span-3 bg-white rounded-xl shadow-md p-6">
 
           <h2 className="text-2xl font-semibold mb-6">
@@ -125,7 +119,6 @@ function Products() {
         </aside>
 
         {/* Products */}
-
         <section className="col-span-9">
 
           <div className="flex justify-between items-center gap-6 mb-8">
@@ -135,7 +128,10 @@ function Products() {
               setSearchTerm={setSearchTerm}
             />
 
-            <ProductSort />
+            <ProductSort
+              sortField={sortField}
+              setSortField={setSortField}
+            />
 
           </div>
 
@@ -151,7 +147,11 @@ function Products() {
 
           </div>
 
-          <Pagination />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setCurrentPage={setCurrentPage}
+          />
 
         </section>
 
