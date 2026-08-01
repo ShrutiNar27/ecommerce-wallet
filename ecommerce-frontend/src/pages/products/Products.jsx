@@ -1,10 +1,68 @@
+import { useEffect, useState } from "react";
+
 import Pagination from "@/components/product/Pagination";
 import ProductGrid from "@/components/product/ProductGrid";
 import ProductFilters from "@/components/product/ProductFilters";
 import ProductSearch from "@/components/product/ProductSearch";
 import ProductSort from "@/components/product/ProductSort";
 
+import {
+  getAllProducts,
+  searchProducts,
+} from "@/services/productService";
+
 function Products() {
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+
+    const fetchProducts = async () => {
+
+      try {
+
+        setLoading(true);
+
+        let data;
+
+        if (searchTerm.trim() === "") {
+
+          data = await getAllProducts();
+
+        } else {
+
+          data = await searchProducts(searchTerm);
+
+        }
+
+        setProducts(data);
+
+      } catch (error) {
+
+        console.error("Failed to fetch products:", error);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+    fetchProducts();
+
+  }, [searchTerm]);
+
+  if (loading) {
+    return (
+      <div className="text-center py-10 text-xl">
+        Loading Products...
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
 
@@ -30,14 +88,25 @@ function Products() {
 
           <div className="flex justify-between items-center gap-6 mb-8">
 
-            <ProductSearch />
+            <ProductSearch
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+            />
 
             <ProductSort />
 
           </div>
 
           <div className="bg-white rounded-xl shadow-md p-6">
-            <ProductGrid />
+
+            {products.length > 0 ? (
+              <ProductGrid products={products} />
+            ) : (
+              <div className="text-center text-gray-500 py-10">
+                No products found.
+              </div>
+            )}
+
           </div>
 
           <Pagination />
