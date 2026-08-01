@@ -17,34 +17,30 @@ function Products() {
         {/* Sidebar */}
         <aside className="col-span-3 bg-white rounded-xl shadow-md p-6">
 
-            <h2 className="text-2xl font-semibold mb-6">
+          <h2 className="text-2xl font-semibold mb-6">
             Filters
-            </h2>
+          </h2>
 
-            <ProductFilters />
+          <ProductFilters />
 
         </aside>
 
         {/* Products */}
         <section className="col-span-9">
 
-            <div className="flex justify-between items-center gap-6 mb-8">
+          <div className="flex justify-between items-center gap-6 mb-8">
 
-                <ProductSearch />
+            <ProductSearch />
 
-                <ProductSort />
+            <ProductSort />
 
-            </div>
+          </div>
 
-            <div className="bg-white rounded-xl shadow-md p-6">
-                <ProductGrid />
-            </div>
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <ProductGrid />
+          </div>
 
-            <div className="bg-white rounded-xl shadow-md p-6">
-                <ProductGrid />
-            </div>
-
-            <Pagination />  
+          <Pagination />
 
         </section>
 
