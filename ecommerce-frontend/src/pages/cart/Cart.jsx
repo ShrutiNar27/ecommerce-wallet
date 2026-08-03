@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   getCart,
@@ -10,65 +11,116 @@ import {
 import CartItem from "@/components/cart/CartItem";
 
 function Cart() {
+
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   const fetchCart = async () => {
+
     try {
+
       const data = await getCart();
+
       setCart(data);
+
     } catch (error) {
+
       console.error("Failed to fetch cart:", error);
+
     } finally {
+
       setLoading(false);
+
     }
+
   };
 
   useEffect(() => {
+
     fetchCart();
+
   }, []);
 
   const handleIncrease = async (item) => {
+
     try {
-      await updateCart(item.productId, item.quantity + 1);
+
+      await updateCart(
+        item.productId,
+        item.quantity + 1
+      );
+
       fetchCart();
+
     } catch (error) {
+
       console.error(error);
+
     }
+
   };
 
   const handleDecrease = async (item) => {
+
     if (item.quantity === 1) return;
 
     try {
-      await updateCart(item.productId, item.quantity - 1);
+
+      await updateCart(
+        item.productId,
+        item.quantity - 1
+      );
+
       fetchCart();
+
     } catch (error) {
+
       console.error(error);
+
     }
+
   };
 
   const handleRemove = async (productId) => {
+
     try {
+
       await removeFromCart(productId);
+
       fetchCart();
+
     } catch (error) {
+
       console.error(error);
+
     }
+
   };
 
   const handleClearCart = async () => {
+
     try {
+
       await clearCart();
+
       fetchCart();
+
     } catch (error) {
+
       console.error(error);
+
     }
+
   };
 
   if (loading) {
+
     return (
+
       <div className="max-w-7xl mx-auto px-6 py-10">
+
         <h1 className="text-4xl font-bold mb-8">
           Shopping Cart
         </h1>
@@ -76,18 +128,25 @@ function Cart() {
         <div className="bg-white rounded-xl shadow-md p-10 text-center">
           Loading Cart...
         </div>
+
       </div>
+
     );
+
   }
 
   if (!cart || cart.items.length === 0) {
+
     return (
+
       <div className="max-w-7xl mx-auto px-6 py-10">
+
         <h1 className="text-4xl font-bold mb-8">
           Shopping Cart
         </h1>
 
         <div className="bg-white rounded-xl shadow-md p-10 text-center">
+
           <h2 className="text-2xl font-semibold">
             Your Cart is Empty
           </h2>
@@ -95,12 +154,17 @@ function Cart() {
           <p className="text-gray-500 mt-3">
             Add some products to continue shopping.
           </p>
+
         </div>
+
       </div>
+
     );
+
   }
 
   return (
+
     <div className="max-w-7xl mx-auto px-6 py-10">
 
       <h1 className="text-4xl font-bold mb-8">
@@ -151,10 +215,11 @@ function Cart() {
 
           </div>
 
-          <button className="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
-
+          <button
+            onClick={() => navigate("/checkout")}
+            className="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+          >
             Proceed to Checkout
-
           </button>
 
           <button
@@ -169,7 +234,9 @@ function Cart() {
       </div>
 
     </div>
+
   );
+
 }
 
 export default Cart;

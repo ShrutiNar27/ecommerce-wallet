@@ -9,6 +9,8 @@ import Products from "@/pages/products/Products";
 import ProductDetails from "@/pages/products/ProductDetails";
 import Cart from "@/pages/cart/Cart";
 import Wishlist from "@/pages/wishlist/Wishlist";
+import Checkout from "@/pages/orders/Checkout";
+import Orders from "@/pages/orders/Orders";
 
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -63,6 +65,24 @@ export default function AppRoutes() {
           element={
             <MainLayout>
               <Cart />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/checkout"
+          element={
+            <MainLayout>
+              <Checkout />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/orders"
+          element={
+            <MainLayout>
+              <Orders />
             </MainLayout>
           }
         />

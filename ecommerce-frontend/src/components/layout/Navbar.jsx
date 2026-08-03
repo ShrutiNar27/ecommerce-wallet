@@ -3,6 +3,7 @@ import {
   Heart,
   User,
   Search,
+  Package,
   LogOut,
 } from "lucide-react";
 
@@ -67,12 +68,23 @@ function Navbar() {
             Products
           </Link>
 
+          <Link
+            to="/orders"
+            className="hover:text-blue-600"
+          >
+            Orders
+          </Link>
+
           <Link to="/wishlist">
             <Heart className="cursor-pointer hover:text-red-500 transition-colors" />
           </Link>
 
           <Link to="/cart">
             <ShoppingCart className="cursor-pointer hover:text-blue-600 transition-colors" />
+          </Link>
+
+          <Link to="/orders">
+            <Package className="cursor-pointer hover:text-blue-600 transition-colors" />
           </Link>
 
           <User className="cursor-pointer hover:text-blue-600 transition-colors" />

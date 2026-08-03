@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { ChevronRight, Heart, ShoppingCart } from "lucide-react";
+import { toast } from "react-toastify";
 
 import { getProductById } from "@/services/productService";
+import { addToCart } from "@/services/cartService";
+import { addToWishlist } from "@/services/wishlistService";
 
 import DeliveryInfo from "@/components/product/DeliveryInfo";
 import RelatedProducts from "@/components/product/RelatedProducts";
@@ -17,7 +20,6 @@ function ProductDetails() {
   const { id } = useParams();
 
   const [product, setProduct] = useState(null);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,23 +48,67 @@ function ProductDetails() {
 
   }, [id]);
 
+  const handleAddToCart = async () => {
+
+    try {
+
+      await addToCart(product.id);
+
+      toast.success("Product added to cart");
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error("Failed to add product to cart");
+
+    }
+
+  };
+
+  const handleWishlist = async () => {
+
+    try {
+
+      await addToWishlist(product.id);
+
+      toast.success("Product added to wishlist");
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error(
+        error.response?.data?.message ||
+        "Failed to add to wishlist"
+      );
+
+    }
+
+  };
+
   if (loading) {
+
     return (
       <div className="text-center py-20 text-xl">
         Loading Product...
       </div>
     );
+
   }
 
   if (!product) {
+
     return (
       <div className="text-center py-20 text-xl text-red-500">
         Product Not Found
       </div>
     );
+
   }
 
   return (
+
     <div className="max-w-7xl mx-auto px-6 py-10">
 
       {/* Breadcrumb */}
@@ -85,7 +131,7 @@ function ProductDetails() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-        {/* Image */}
+        {/* Product Image */}
 
         <div className="bg-white rounded-xl shadow-md p-8">
 
@@ -95,7 +141,7 @@ function ProductDetails() {
 
         </div>
 
-        {/* Product Info */}
+        {/* Product Information */}
 
         <div className="bg-white rounded-xl shadow-md p-8">
 
@@ -127,7 +173,10 @@ function ProductDetails() {
 
           <div className="flex gap-4 mt-8">
 
-            <button className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+            <button
+              onClick={handleAddToCart}
+              className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+            >
 
               <ShoppingCart size={18} />
 
@@ -135,7 +184,10 @@ function ProductDetails() {
 
             </button>
 
-            <button className="flex items-center gap-2 border px-6 py-3 rounded-lg hover:bg-gray-100">
+            <button
+              onClick={handleWishlist}
+              className="flex items-center gap-2 border px-6 py-3 rounded-lg hover:bg-gray-100"
+            >
 
               <Heart size={18} />
 
@@ -143,7 +195,9 @@ function ProductDetails() {
 
             </button>
 
-            <button className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600">
+            <button
+              className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600"
+            >
 
               Buy Now
 
@@ -161,10 +215,14 @@ function ProductDetails() {
 
       <DeliveryInfo />
 
-      <RelatedProducts />
+      <RelatedProducts
+        currentProductId={product.id}
+      />
 
     </div>
+
   );
+
 }
 
 export default ProductDetails;
