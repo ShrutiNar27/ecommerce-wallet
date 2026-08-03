@@ -1,7 +1,31 @@
 import { Link } from "react-router-dom";
 import { Heart, ShoppingCart, Star } from "lucide-react";
+import { toast } from "react-toastify";
+
+import { addToCart } from "@/services/cartService";
 
 function ProductCard({ id, image, title, price, rating }) {
+
+  const handleAddToCart = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      await addToCart(id);
+
+      toast.success("Product added to cart");
+
+    } catch (error) {
+
+      console.error(error);
+
+      toast.error("Failed to add product to cart");
+
+    }
+
+  };
+
   return (
     <Link to={`/products/${id}`}>
 
@@ -15,7 +39,10 @@ function ProductCard({ id, image, title, price, rating }) {
             className="w-full h-64 object-cover group-hover:scale-105 transition duration-500"
           />
 
-          <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100">
+          <button
+            className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100"
+            onClick={(e) => e.preventDefault()}
+          >
             <Heart size={18} />
           </button>
 
@@ -28,8 +55,16 @@ function ProductCard({ id, image, title, price, rating }) {
           </h3>
 
           <div className="flex items-center gap-1 mt-2 text-yellow-500">
-            <Star size={16} fill="currentColor" />
-            <span className="text-gray-700">{rating}</span>
+
+            <Star
+              size={16}
+              fill="currentColor"
+            />
+
+            <span className="text-gray-700">
+              {rating}
+            </span>
+
           </div>
 
           <div className="flex justify-between items-center mt-5">
@@ -38,7 +73,10 @@ function ProductCard({ id, image, title, price, rating }) {
               ₹{price}
             </span>
 
-            <button className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700">
+            <button
+              onClick={handleAddToCart}
+              className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
+            >
               <ShoppingCart size={20} />
             </button>
 
@@ -47,6 +85,7 @@ function ProductCard({ id, image, title, price, rating }) {
         </div>
 
       </div>
+
     </Link>
   );
 }

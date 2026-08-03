@@ -6,8 +6,11 @@ import Home from "@/pages/home/Home";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import ForgotPassword from "@/pages/auth/ForgotPassword";
+
 import Products from "@/pages/products/Products";
 import ProductDetails from "@/pages/products/ProductDetails";
+import Cart from "@/pages/cart/Cart";
+
 import MainLayout from "@/components/layout/MainLayout";
 
 export default function AppRoutes() {
@@ -15,12 +18,16 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
 
-        {/* ---------- Public Auth Pages ---------- */}
+        {/* Authentication Pages */}
+
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
+
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* ---------- Public Home ---------- */}
+        {/* Public Pages */}
+
         <Route
           path="/"
           element={
@@ -30,27 +37,32 @@ export default function AppRoutes() {
           }
         />
 
-        {/* ---------- Protected Products ---------- */}
         <Route
           path="/products"
           element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Products />
-              </MainLayout>
-            </ProtectedRoute>
+            <MainLayout>
+              <Products />
+            </MainLayout>
           }
         />
 
-        {/* ---------- Protected Product Details ---------- */}
         <Route
           path="/products/:id"
           element={
-            <ProtectedRoute>
-              <MainLayout>
-                <ProductDetails />
-              </MainLayout>
-            </ProtectedRoute>
+            <MainLayout>
+              <ProductDetails />
+            </MainLayout>
+          }
+        />
+
+        {/* Cart */}
+
+        <Route
+          path="/cart"
+          element={
+            <MainLayout>
+              <Cart />
+            </MainLayout>
           }
         />
 
