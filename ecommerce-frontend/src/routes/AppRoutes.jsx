@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import ProtectedRoute from "./ProtectedRoute";
-
 import Home from "@/pages/home/Home";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
@@ -10,6 +8,7 @@ import ForgotPassword from "@/pages/auth/ForgotPassword";
 import Products from "@/pages/products/Products";
 import ProductDetails from "@/pages/products/ProductDetails";
 import Cart from "@/pages/cart/Cart";
+import Wishlist from "@/pages/wishlist/Wishlist";
 
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -18,7 +17,7 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
 
-        {/* Authentication Pages */}
+        {/* Authentication */}
 
         <Route path="/login" element={<Login />} />
 
@@ -26,7 +25,7 @@ export default function AppRoutes() {
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* Public Pages */}
+        {/* Home */}
 
         <Route
           path="/"
@@ -36,6 +35,8 @@ export default function AppRoutes() {
             </MainLayout>
           }
         />
+
+        {/* Products */}
 
         <Route
           path="/products"
@@ -62,6 +63,17 @@ export default function AppRoutes() {
           element={
             <MainLayout>
               <Cart />
+            </MainLayout>
+          }
+        />
+
+        {/* Wishlist */}
+
+        <Route
+          path="/wishlist"
+          element={
+            <MainLayout>
+              <Wishlist />
             </MainLayout>
           }
         />

@@ -1,32 +1,63 @@
 import { Link } from "react-router-dom";
 import { Heart, ShoppingCart, Star } from "lucide-react";
-import { toast } from "react-toastify";
 
+import { addToWishlist } from "@/services/wishlistService";
 import { addToCart } from "@/services/cartService";
 
-function ProductCard({ id, image, title, price, rating }) {
+function ProductCard({
+  id,
+  image,
+  title,
+  price,
+  rating,
+}) {
 
-  const handleAddToCart = async (e) => {
+  const handleWishlist = async (e) => {
 
     e.preventDefault();
+    e.stopPropagation();
+
+    try {
+
+      await addToWishlist(id);
+
+      alert("Added to wishlist ❤️");
+
+    } catch (error) {
+
+      alert(
+        error.response?.data?.message ||
+        "Failed to add to wishlist"
+      );
+
+    }
+
+  };
+
+  const handleCart = async (e) => {
+
+    e.preventDefault();
+    e.stopPropagation();
 
     try {
 
       await addToCart(id);
 
-      toast.success("Product added to cart");
+      alert("Added to cart 🛒");
 
     } catch (error) {
 
-      console.error(error);
-
-      toast.error("Failed to add product to cart");
+      alert(
+        error.response?.data?.message ||
+        "Failed to add to cart"
+      );
 
     }
 
   };
 
   return (
+
     <Link to={`/products/${id}`}>
 
       <div className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
@@ -40,8 +71,8 @@ function ProductCard({ id, image, title, price, rating }) {
           />
 
           <button
+            onClick={handleWishlist}
             className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100"
-            onClick={(e) => e.preventDefault()}
           >
             <Heart size={18} />
           </button>
@@ -74,7 +105,7 @@ function ProductCard({ id, image, title, price, rating }) {
             </span>
 
             <button
-              onClick={handleAddToCart}
+              onClick={handleCart}
               className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
             >
               <ShoppingCart size={20} />
@@ -87,6 +118,7 @@ function ProductCard({ id, image, title, price, rating }) {
       </div>
 
     </Link>
+
   );
 }
 

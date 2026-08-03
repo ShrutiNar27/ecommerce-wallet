@@ -1,4 +1,11 @@
-import { ShoppingCart, Heart, User, Search, LogOut } from "lucide-react";
+import {
+  ShoppingCart,
+  Heart,
+  User,
+  Search,
+  LogOut,
+} from "lucide-react";
+
 import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
@@ -11,6 +18,7 @@ function Navbar() {
     localStorage.removeItem("refreshToken");
 
     navigate("/login");
+
   };
 
   return (
@@ -41,21 +49,33 @@ function Navbar() {
 
         </div>
 
-        {/* Menu */}
+        {/* Navigation */}
 
-        <div className="flex gap-6 items-center">
+        <div className="flex items-center gap-6">
 
-          <Link to="/">Home</Link>
-
-          <Link to="/products">Products</Link>
-
-          <Heart className="cursor-pointer" />
-
-          <Link to="/cart">
-            <ShoppingCart className="cursor-pointer" />
+          <Link
+            to="/"
+            className="hover:text-blue-600"
+          >
+            Home
           </Link>
 
-          <User className="cursor-pointer" />
+          <Link
+            to="/products"
+            className="hover:text-blue-600"
+          >
+            Products
+          </Link>
+
+          <Link to="/wishlist">
+            <Heart className="cursor-pointer hover:text-red-500 transition-colors" />
+          </Link>
+
+          <Link to="/cart">
+            <ShoppingCart className="cursor-pointer hover:text-blue-600 transition-colors" />
+          </Link>
+
+          <User className="cursor-pointer hover:text-blue-600 transition-colors" />
 
           <button
             onClick={handleLogout}
