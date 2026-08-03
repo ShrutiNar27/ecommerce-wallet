@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { Link, useNavigate } from "react-router-dom";
+import { MapPin } from "lucide-react";
 
 function Navbar() {
 
@@ -85,6 +86,10 @@ function Navbar() {
 
           <Link to="/orders">
             <Package className="cursor-pointer hover:text-blue-600 transition-colors" />
+          </Link>
+
+          <Link to="/addresses">
+            <MapPin className="cursor-pointer hover:text-blue-600 transition-colors" />
           </Link>
 
           <User className="cursor-pointer hover:text-blue-600 transition-colors" />

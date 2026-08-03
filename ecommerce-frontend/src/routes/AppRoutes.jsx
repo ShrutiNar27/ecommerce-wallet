@@ -11,6 +11,7 @@ import Cart from "@/pages/cart/Cart";
 import Wishlist from "@/pages/wishlist/Wishlist";
 import Checkout from "@/pages/orders/Checkout";
 import Orders from "@/pages/orders/Orders";
+import Addresses from "@/pages/address/Addresses";
 
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -83,6 +84,15 @@ export default function AppRoutes() {
           element={
             <MainLayout>
               <Orders />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/addresses"
+          element={
+            <MainLayout>
+              <Addresses />
             </MainLayout>
           }
         />
