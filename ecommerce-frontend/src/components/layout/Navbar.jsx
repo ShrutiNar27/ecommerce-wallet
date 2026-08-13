@@ -5,6 +5,7 @@ import {
   Search,
   Package,
   LogOut,
+  Wallet as WalletIcon,
 } from "lucide-react";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -90,6 +91,12 @@ function Navbar() {
 
           <Link to="/addresses">
             <MapPin className="cursor-pointer hover:text-blue-600 transition-colors" />
+          </Link>
+
+          <Link to="/wallet">
+            <WalletIcon
+              className="cursor-pointer hover:text-blue-600 transition-colors"
+            />
           </Link>
 
           <User className="cursor-pointer hover:text-blue-600 transition-colors" />
