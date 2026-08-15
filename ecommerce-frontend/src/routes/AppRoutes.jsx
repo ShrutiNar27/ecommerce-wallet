@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Profile from "@/pages/profile/Profile";
 import Home from "@/pages/home/Home";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
@@ -114,6 +115,15 @@ export default function AppRoutes() {
           element={
             <MainLayout>
               <Wallet />
+            </MainLayout>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <MainLayout>
+              <Profile />
             </MainLayout>
           }
         />
