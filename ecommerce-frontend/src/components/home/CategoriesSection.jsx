@@ -30,14 +30,14 @@ const categories = [
 
 function CategoriesSection() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20">
+    <section className="max-w-7xl mx-auto px-6 py-12 md:py-20">
 
       <SectionHeading
         title="Shop by Category"
         subtitle="Discover products across our most popular categories."
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
 
         {categories.map((category) => (
           <CategoryCard

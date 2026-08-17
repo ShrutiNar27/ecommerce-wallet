@@ -67,19 +67,20 @@ function ProductCard({
           <img
             src={image}
             alt={title}
-            className="w-full h-64 object-cover group-hover:scale-105 transition duration-500"
+            className="w-full h-52 sm:h-64 object-cover group-hover:scale-105 transition duration-500"
           />
 
           <button
             onClick={handleWishlist}
             className="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100"
+            aria-label="Add to wishlist"
           >
             <Heart size={18} />
           </button>
 
         </div>
 
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
 
           <h3 className="text-lg font-semibold line-clamp-2">
             {title}
@@ -98,15 +99,16 @@ function ProductCard({
 
           </div>
 
-          <div className="flex justify-between items-center mt-5">
+          <div className="flex justify-between items-center mt-4 sm:mt-5">
 
-            <span className="text-2xl font-bold text-blue-600">
+            <span className="text-xl sm:text-2xl font-bold text-blue-600">
               ₹{price}
             </span>
 
             <button
               onClick={handleCart}
               className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700"
+              aria-label="Add to cart"
             >
               <ShoppingCart size={20} />
             </button>

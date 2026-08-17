@@ -6,14 +6,19 @@ import {
   Package,
   LogOut,
   Wallet as WalletIcon,
+  Menu,
+  X,
 } from "lucide-react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { MapPin } from "lucide-react";
+import { useState } from "react";
 
 function Navbar() {
 
   const navigate = useNavigate();
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
 
@@ -22,6 +27,10 @@ function Navbar() {
 
     navigate("/login");
 
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
   };
 
   return (
@@ -33,14 +42,16 @@ function Navbar() {
 
         <Link
           to="/"
+          onClick={closeMenu}
           className="text-2xl font-bold text-blue-600"
         >
           ShopEase
         </Link>
 
-        {/* Search */}
 
-        <div className="flex items-center border rounded-lg px-3 py-2 w-[340px]">
+        {/* Desktop Search */}
+
+        <div className="hidden md:flex items-center border rounded-lg px-3 py-2 w-[340px]">
 
           <Search size={18} />
 
@@ -52,9 +63,10 @@ function Navbar() {
 
         </div>
 
-        {/* Navigation */}
 
-        <div className="flex items-center gap-6">
+        {/* Desktop Navigation */}
+
+        <div className="hidden md:flex items-center gap-6">
 
           <Link
             to="/"
@@ -78,40 +90,191 @@ function Navbar() {
           </Link>
 
           <Link to="/wishlist">
-            <Heart className="cursor-pointer hover:text-red-500 transition-colors" />
+
+            <Heart
+              className="cursor-pointer hover:text-red-500 transition-colors"
+            />
+
           </Link>
 
           <Link to="/cart">
-            <ShoppingCart className="cursor-pointer hover:text-blue-600 transition-colors" />
+
+            <ShoppingCart
+              className="cursor-pointer hover:text-blue-600 transition-colors"
+            />
+
           </Link>
 
           <Link to="/orders">
-            <Package className="cursor-pointer hover:text-blue-600 transition-colors" />
+
+            <Package
+              className="cursor-pointer hover:text-blue-600 transition-colors"
+            />
+
           </Link>
 
           <Link to="/addresses">
-            <MapPin className="cursor-pointer hover:text-blue-600 transition-colors" />
+
+            <MapPin
+              className="cursor-pointer hover:text-blue-600 transition-colors"
+            />
+
           </Link>
 
           <Link to="/wallet">
+
             <WalletIcon
               className="cursor-pointer hover:text-blue-600 transition-colors"
             />
+
           </Link>
 
-          <User className="cursor-pointer hover:text-blue-600 transition-colors" />
+          <Link to="/profile">
+
+            <User
+              className="cursor-pointer hover:text-blue-600 transition-colors"
+            />
+
+          </Link>
 
           <button
             onClick={handleLogout}
             className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
           >
+
             <LogOut size={18} />
+
             Logout
+
           </button>
 
         </div>
 
+
+        {/* Mobile Menu Button */}
+
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden"
+          aria-label="Toggle menu"
+        >
+
+          {menuOpen ? (
+            <X size={28} />
+          ) : (
+            <Menu size={28} />
+          )}
+
+        </button>
+
       </div>
+
+
+      {/* Mobile Menu */}
+
+      {menuOpen && (
+
+        <div className="md:hidden border-t bg-white px-6 py-4">
+
+          {/* Mobile Search */}
+
+          <div className="flex items-center border rounded-lg px-3 py-2 mb-4">
+
+            <Search size={18} />
+
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="ml-2 outline-none w-full"
+            />
+
+          </div>
+
+
+          {/* Mobile Navigation */}
+
+          <div className="flex flex-col gap-4">
+
+            <Link
+              to="/"
+              onClick={closeMenu}
+              className="hover:text-blue-600"
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/products"
+              onClick={closeMenu}
+              className="hover:text-blue-600"
+            >
+              Products
+            </Link>
+
+            <Link
+              to="/orders"
+              onClick={closeMenu}
+              className="hover:text-blue-600"
+            >
+              📦 Orders
+            </Link>
+
+            <Link
+              to="/wishlist"
+              onClick={closeMenu}
+              className="hover:text-red-500"
+            >
+              ❤️ Wishlist
+            </Link>
+
+            <Link
+              to="/cart"
+              onClick={closeMenu}
+              className="hover:text-blue-600"
+            >
+              🛒 Cart
+            </Link>
+
+            <Link
+              to="/addresses"
+              onClick={closeMenu}
+              className="hover:text-blue-600"
+            >
+              📍 Addresses
+            </Link>
+
+            <Link
+              to="/wallet"
+              onClick={closeMenu}
+              className="hover:text-blue-600"
+            >
+              💳 Wallet
+            </Link>
+
+            <Link
+              to="/profile"
+              onClick={closeMenu}
+              className="hover:text-blue-600"
+            >
+              👤 Profile
+            </Link>
+
+            <button
+              onClick={handleLogout}
+              className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg w-full"
+            >
+
+              <LogOut size={18} />
+
+              Logout
+
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
 
     </nav>
   );

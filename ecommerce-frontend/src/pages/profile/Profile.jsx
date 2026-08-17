@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import {
   getCurrentUser,
-  updateCurrentUser
+  updateCurrentUser,
 } from "@/services/userService";
 
 import { toast } from "react-toastify";
@@ -48,64 +48,63 @@ function Profile() {
 
   const handleSave = async () => {
 
-  if (!name.trim()) {
+    if (!name.trim()) {
 
-    toast.error("Name cannot be empty");
+      toast.error("Name cannot be empty");
 
-    return;
-  }
+      return;
+    }
 
-  try {
+    try {
 
-    setSaving(true);
+      setSaving(true);
 
-    const updatedUser = await updateCurrentUser({
-      name: name.trim()
-    });
+      const updatedUser = await updateCurrentUser({
+        name: name.trim(),
+      });
 
-    setUser(updatedUser);
+      setUser(updatedUser);
+      setName(updatedUser.name);
+      setEditing(false);
 
-    setName(updatedUser.name);
+      toast.success("Profile updated successfully");
 
-    setEditing(false);
+    } catch (error) {
 
-    toast.success("Profile updated successfully");
+      console.error("Failed to update profile:", error);
 
-  } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+        "Failed to update profile"
+      );
 
-    console.error("Failed to update profile:", error);
+    } finally {
 
-    toast.error(
-      error.response?.data?.message ||
-      "Failed to update profile"
-    );
+      setSaving(false);
 
-  } finally {
+    }
 
-    setSaving(false);
+  };
 
-  }
-};
+  const handleLogout = () => {
 
-const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
 
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+    navigate("/login");
 
-  navigate("/login");
-
-};
+  };
 
   if (loading) {
 
     return (
-      <div className="max-w-4xl mx-auto py-10 px-6">
+      <div className="max-w-4xl mx-auto py-8 sm:py-10 px-5 sm:px-6">
 
-        <h1 className="text-4xl font-bold mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
           My Profile
         </h1>
 
-        <div className="bg-white p-10 rounded-xl shadow">
+        <div className="bg-white p-8 sm:p-10 rounded-xl shadow text-center">
           Loading...
         </div>
 
@@ -117,15 +116,15 @@ const handleLogout = () => {
   if (!user) {
 
     return (
-      <div className="max-w-4xl mx-auto py-10 px-6">
+      <div className="max-w-4xl mx-auto py-8 sm:py-10 px-5 sm:px-6">
 
-        <h1 className="text-4xl font-bold mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
           My Profile
         </h1>
 
-        <div className="bg-white p-10 rounded-xl shadow text-center">
+        <div className="bg-white p-8 sm:p-10 rounded-xl shadow text-center">
 
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-xl sm:text-2xl font-semibold">
             Failed to load profile
           </h2>
 
@@ -138,13 +137,13 @@ const handleLogout = () => {
 
   return (
 
-    <div className="max-w-4xl mx-auto py-10 px-6">
+    <div className="max-w-4xl mx-auto py-8 sm:py-10 px-5 sm:px-6">
 
-      <h1 className="text-4xl font-bold mb-8">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
         My Profile
       </h1>
 
-      <div className="bg-white rounded-xl shadow p-8">
+      <div className="bg-white rounded-xl shadow p-5 sm:p-8">
 
         {/* Name */}
 
@@ -160,18 +159,19 @@ const handleLogout = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full mt-2 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-2 border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
           ) : (
 
-            <p className="text-xl font-semibold mt-1">
+            <p className="text-lg sm:text-xl font-semibold mt-1 break-words">
               {user.name}
             </p>
 
           )}
 
         </div>
+
 
         {/* Email */}
 
@@ -181,21 +181,22 @@ const handleLogout = () => {
             Email
           </p>
 
-          <p className="text-xl font-semibold mt-1">
+          <p className="text-lg sm:text-xl font-semibold mt-1 break-words">
             {user.email}
           </p>
 
         </div>
 
-        {/* Buttons */}
 
-        <div className="mt-8 flex gap-4">
+        {/* Edit / Save / Cancel */}
+
+        <div className="mt-7 flex flex-col sm:flex-row gap-3 sm:gap-4">
 
           {!editing ? (
 
             <button
               onClick={() => setEditing(true)}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+              className="w-full sm:w-auto bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
             >
               Edit Profile
             </button>
@@ -206,7 +207,7 @@ const handleLogout = () => {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400"
+                className="w-full sm:w-auto bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 disabled:bg-gray-400"
               >
                 {saving ? "Saving..." : "Save Changes"}
               </button>
@@ -217,7 +218,7 @@ const handleLogout = () => {
                   setName(user.name);
                 }}
                 disabled={saving}
-                className="bg-gray-200 px-6 py-2 rounded-lg hover:bg-gray-300"
+                className="w-full sm:w-auto bg-gray-200 px-6 py-3 rounded-lg hover:bg-gray-300"
               >
                 Cancel
               </button>
@@ -227,58 +228,61 @@ const handleLogout = () => {
 
         </div>
 
+
+        {/* Account Navigation */}
+
         <div className="mt-6">
 
-            <button
+          <button
             onClick={() => navigate("/orders")}
-            className="w-full bg-gray-100 hover:bg-gray-200 text-left px-5 py-4 rounded-lg font-semibold"
-            >
+            className="w-full bg-gray-100 hover:bg-gray-200 text-left px-4 sm:px-5 py-3.5 sm:py-4 rounded-lg font-semibold"
+          >
             📦 My Orders
-            </button>
+          </button>
 
         </div>
 
         <div className="mt-3">
 
-            <button
-                onClick={() => navigate("/wishlist")}
-                className="w-full bg-gray-100 hover:bg-gray-200 text-left px-5 py-4 rounded-lg font-semibold"
-            >
-                ❤️ My Wishlist
-            </button>
+          <button
+            onClick={() => navigate("/wishlist")}
+            className="w-full bg-gray-100 hover:bg-gray-200 text-left px-4 sm:px-5 py-3.5 sm:py-4 rounded-lg font-semibold"
+          >
+            ❤️ My Wishlist
+          </button>
 
         </div>
 
         <div className="mt-3">
 
-            <button
-                onClick={() => navigate("/addresses")}
-                className="w-full bg-gray-100 hover:bg-gray-200 text-left px-5 py-4 rounded-lg font-semibold"
-            >
-                📍 My Addresses
-            </button>
+          <button
+            onClick={() => navigate("/addresses")}
+            className="w-full bg-gray-100 hover:bg-gray-200 text-left px-4 sm:px-5 py-3.5 sm:py-4 rounded-lg font-semibold"
+          >
+            📍 My Addresses
+          </button>
 
         </div>
 
         <div className="mt-3">
 
-            <button
-                onClick={() => navigate("/wallet")}
-                className="w-full bg-gray-100 hover:bg-gray-200 text-left px-5 py-4 rounded-lg font-semibold"
-            >
-                💳 My Wallet
-            </button>
+          <button
+            onClick={() => navigate("/wallet")}
+            className="w-full bg-gray-100 hover:bg-gray-200 text-left px-4 sm:px-5 py-3.5 sm:py-4 rounded-lg font-semibold"
+          >
+            💳 My Wallet
+          </button>
 
         </div>
 
         <div className="mt-3">
 
-            <button
-                onClick={handleLogout}
-                className="w-full bg-red-100 hover:bg-red-200 text-red-600 text-left px-5 py-4 rounded-lg font-semibold"
-            >
-                🚪 Logout
-            </button>
+          <button
+            onClick={handleLogout}
+            className="w-full bg-red-100 hover:bg-red-200 text-red-600 text-left px-4 sm:px-5 py-3.5 sm:py-4 rounded-lg font-semibold"
+          >
+            🚪 Logout
+          </button>
 
         </div>
 

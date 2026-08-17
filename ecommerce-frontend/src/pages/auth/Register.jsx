@@ -1,4 +1,5 @@
 import AuthLayout from "@/components/auth/AuthLayout";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 function Register() {
   return (
@@ -6,7 +7,7 @@ function Register() {
       title="Create Account"
       subtitle="Join ShopEase today."
     >
-      Register Form
+      <RegisterForm />
     </AuthLayout>
   );
 }

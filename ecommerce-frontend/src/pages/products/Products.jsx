@@ -86,26 +86,30 @@ function Products() {
   ]);
 
   if (loading) {
+
     return (
       <div className="text-center py-10 text-xl">
         Loading Products...
       </div>
     );
+
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
 
-      <h1 className="text-4xl font-bold mb-8">
+    <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 sm:py-10">
+
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
         All Products
       </h1>
 
-      <div className="grid grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
 
         {/* Sidebar */}
-        <aside className="col-span-3 bg-white rounded-xl shadow-md p-6">
 
-          <h2 className="text-2xl font-semibold mb-6">
+        <aside className="md:col-span-3 bg-white rounded-xl shadow-md p-5 sm:p-6">
+
+          <h2 className="text-xl sm:text-2xl font-semibold mb-5 sm:mb-6">
             Filters
           </h2>
 
@@ -118,10 +122,12 @@ function Products() {
 
         </aside>
 
-        {/* Products */}
-        <section className="col-span-9">
 
-          <div className="flex justify-between items-center gap-6 mb-8">
+        {/* Products */}
+
+        <section className="md:col-span-9">
+
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
 
             <ProductSearch
               searchTerm={searchTerm}
@@ -135,14 +141,18 @@ function Products() {
 
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6">
+          <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
 
             {products.length > 0 ? (
+
               <ProductGrid products={products} />
+
             ) : (
+
               <div className="text-center py-10 text-gray-500">
                 No products found.
               </div>
+
             )}
 
           </div>
@@ -158,6 +168,7 @@ function Products() {
       </div>
 
     </div>
+
   );
 }
 

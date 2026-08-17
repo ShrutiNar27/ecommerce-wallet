@@ -6,7 +6,7 @@ function ProductSort({
     <select
       value={sortField}
       onChange={(e) => setSortField(e.target.value)}
-      className="border rounded-xl px-4 py-3 outline-none"
+      className="w-full sm:w-auto border rounded-xl px-4 py-3 outline-none text-sm sm:text-base"
     >
       <option value="">Sort By</option>
 

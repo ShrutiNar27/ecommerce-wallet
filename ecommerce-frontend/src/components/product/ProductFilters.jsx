@@ -34,19 +34,19 @@ function ProductFilters({
   }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
 
       {/* Categories */}
 
       <div>
 
-        <h3 className="text-lg font-semibold mb-3">
+        <h3 className="text-base sm:text-lg font-semibold mb-3">
           Category
         </h3>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
 
-          <label className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-sm sm:text-base cursor-pointer">
 
             <input
               type="radio"
@@ -62,7 +62,7 @@ function ProductFilters({
 
             <label
               key={category.id}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-sm sm:text-base cursor-pointer"
             >
 
               <input
@@ -87,7 +87,7 @@ function ProductFilters({
 
       <div>
 
-        <h3 className="text-lg font-semibold mb-3">
+        <h3 className="text-base sm:text-lg font-semibold mb-3">
           Maximum Price
         </h3>
 
@@ -100,7 +100,7 @@ function ProductFilters({
           onChange={(e) =>
             setMaxPrice(Number(e.target.value))
           }
-          className="w-full"
+          className="w-full cursor-pointer"
         />
 
         <p className="text-sm text-gray-500 mt-2">
@@ -113,25 +113,43 @@ function ProductFilters({
 
       <div>
 
-        <h3 className="text-lg font-semibold mb-3">
+        <h3 className="text-base sm:text-lg font-semibold mb-3">
           Rating
         </h3>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
 
-          <label className="flex items-center gap-2">
-            <input type="radio" name="rating" />
+          <label className="flex items-center gap-2 text-sm sm:text-base cursor-pointer">
+
+            <input
+              type="radio"
+              name="rating"
+            />
+
             4★ & above
+
           </label>
 
-          <label className="flex items-center gap-2">
-            <input type="radio" name="rating" />
+          <label className="flex items-center gap-2 text-sm sm:text-base cursor-pointer">
+
+            <input
+              type="radio"
+              name="rating"
+            />
+
             3★ & above
+
           </label>
 
-          <label className="flex items-center gap-2">
-            <input type="radio" name="rating" />
+          <label className="flex items-center gap-2 text-sm sm:text-base cursor-pointer">
+
+            <input
+              type="radio"
+              name="rating"
+            />
+
             2★ & above
+
           </label>
 
         </div>

@@ -35,9 +35,9 @@ function RelatedProducts({ currentProductId }) {
   }, [currentProductId]);
 
   return (
-    <div className="mt-16">
+    <div className="mt-10 sm:mt-16">
 
-      <h2 className="text-3xl font-bold mb-8">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-5 sm:mb-8">
         Related Products
       </h2>
 

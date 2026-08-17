@@ -119,13 +119,13 @@ function Cart() {
 
     return (
 
-      <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 sm:py-10">
 
-        <h1 className="text-4xl font-bold mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
           Shopping Cart
         </h1>
 
-        <div className="bg-white rounded-xl shadow-md p-10 text-center">
+        <div className="bg-white rounded-xl shadow-md p-8 sm:p-10 text-center">
           Loading Cart...
         </div>
 
@@ -139,15 +139,15 @@ function Cart() {
 
     return (
 
-      <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 sm:py-10">
 
-        <h1 className="text-4xl font-bold mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
           Shopping Cart
         </h1>
 
-        <div className="bg-white rounded-xl shadow-md p-10 text-center">
+        <div className="bg-white rounded-xl shadow-md p-8 sm:p-10 text-center">
 
-          <h2 className="text-2xl font-semibold">
+          <h2 className="text-xl sm:text-2xl font-semibold">
             Your Cart is Empty
           </h2>
 
@@ -165,17 +165,17 @@ function Cart() {
 
   return (
 
-    <div className="max-w-7xl mx-auto px-6 py-10">
+    <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 sm:py-10">
 
-      <h1 className="text-4xl font-bold mb-8">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
         Shopping Cart
       </h1>
 
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
         {/* Cart Items */}
 
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
 
           {cart.items.map((item) => (
 
@@ -193,13 +193,13 @@ function Cart() {
 
         {/* Order Summary */}
 
-        <div className="bg-white rounded-xl shadow-md p-6 h-fit sticky top-24">
+        <div className="bg-white rounded-xl shadow-md p-5 sm:p-6 h-fit lg:sticky lg:top-24">
 
-          <h2 className="text-2xl font-semibold mb-6">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-5 sm:mb-6">
             Order Summary
           </h2>
 
-          <div className="flex justify-between mb-4">
+          <div className="flex justify-between mb-4 text-sm sm:text-base">
 
             <span>Total Items</span>
 
@@ -207,7 +207,7 @@ function Cart() {
 
           </div>
 
-          <div className="flex justify-between text-xl font-bold">
+          <div className="flex justify-between items-center text-lg sm:text-xl font-bold">
 
             <span>Total</span>
 
@@ -217,7 +217,7 @@ function Cart() {
 
           <button
             onClick={() => navigate("/checkout")}
-            className="w-full mt-8 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
+            className="w-full mt-6 sm:mt-8 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
           >
             Proceed to Checkout
           </button>

@@ -7,14 +7,14 @@ function Pagination({
 }) {
 
   return (
-    <div className="flex items-center justify-center gap-3 mt-8">
+    <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
 
       <button
         disabled={currentPage === 0}
         onClick={() =>
           setCurrentPage((prev) => prev - 1)
         }
-        className={`flex items-center gap-1 px-4 py-2 border rounded-lg ${
+        className={`flex items-center gap-1 px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg ${
           currentPage === 0
             ? "opacity-50 cursor-not-allowed"
             : "hover:bg-gray-100"
@@ -30,7 +30,7 @@ function Pagination({
           <button
             key={index}
             onClick={() => setCurrentPage(index)}
-            className={`px-4 py-2 rounded-lg ${
+            className={`px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg ${
               currentPage === index
                 ? "bg-blue-600 text-white"
                 : "border hover:bg-gray-100"
@@ -46,7 +46,7 @@ function Pagination({
         onClick={() =>
           setCurrentPage((prev) => prev + 1)
         }
-        className={`flex items-center gap-1 px-4 py-2 border rounded-lg ${
+        className={`flex items-center gap-1 px-3 sm:px-4 py-2 text-sm sm:text-base border rounded-lg ${
           currentPage === totalPages - 1
             ? "opacity-50 cursor-not-allowed"
             : "hover:bg-gray-100"

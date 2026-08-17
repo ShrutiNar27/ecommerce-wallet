@@ -171,11 +171,11 @@ function ProductDetails() {
 
           <QuantitySelector />
 
-          <div className="flex gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8">
 
             <button
               onClick={handleAddToCart}
-              className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
             >
 
               <ShoppingCart size={18} />
@@ -186,7 +186,7 @@ function ProductDetails() {
 
             <button
               onClick={handleWishlist}
-              className="flex items-center gap-2 border px-6 py-3 rounded-lg hover:bg-gray-100"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 border px-6 py-3 rounded-lg hover:bg-gray-100"
             >
 
               <Heart size={18} />
@@ -196,7 +196,7 @@ function ProductDetails() {
             </button>
 
             <button
-              className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600"
+              className="w-full sm:w-auto bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600"
             >
 
               Buy Now

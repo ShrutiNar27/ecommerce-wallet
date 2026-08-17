@@ -48,14 +48,12 @@ function AddressForm({
 
   return (
 
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-start sm:items-center z-50 p-4 overflow-y-auto">
 
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl p-8">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl p-5 sm:p-8 my-4 sm:my-0">
 
-        <h2 className="text-2xl font-bold mb-6">
-
+        <h2 className="text-xl sm:text-2xl font-bold mb-5 sm:mb-6">
           {initialData ? "Edit Address" : "Add Address"}
-
         </h2>
 
         <form
@@ -98,14 +96,14 @@ function AddressForm({
             className="w-full border rounded-lg p-3"
           />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             <input
               name="city"
               placeholder="City"
               value={formData.city}
               onChange={handleChange}
-              className="border rounded-lg p-3"
+              className="w-full border rounded-lg p-3"
               required
             />
 
@@ -114,20 +112,20 @@ function AddressForm({
               placeholder="State"
               value={formData.state}
               onChange={handleChange}
-              className="border rounded-lg p-3"
+              className="w-full border rounded-lg p-3"
               required
             />
 
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             <input
               name="country"
               placeholder="Country"
               value={formData.country}
               onChange={handleChange}
-              className="border rounded-lg p-3"
+              className="w-full border rounded-lg p-3"
               required
             />
 
@@ -136,25 +134,25 @@ function AddressForm({
               placeholder="Postal Code"
               value={formData.postalCode}
               onChange={handleChange}
-              className="border rounded-lg p-3"
+              className="w-full border rounded-lg p-3"
               required
             />
 
           </div>
 
-          <div className="flex justify-end gap-4 pt-6">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 sm:gap-4 pt-4 sm:pt-6">
 
             <button
               type="button"
               onClick={onCancel}
-              className="px-6 py-2 border rounded-lg hover:bg-gray-100"
+              className="w-full sm:w-auto px-6 py-3 border rounded-lg hover:bg-gray-100"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
             >
               Save Address
             </button>

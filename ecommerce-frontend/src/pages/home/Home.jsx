@@ -9,23 +9,23 @@ function Home() {
     <div>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24">
+      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 md:py-24">
 
-        <div className="max-w-7xl mx-auto px-8">
+        <div className="max-w-7xl mx-auto px-6 md:px-8">
 
-          <h1 className="text-6xl font-bold">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold">
             Shop Smart.
           </h1>
 
-          <h1 className="text-6xl font-bold mt-2">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mt-2">
             Shop Better.
           </h1>
 
-          <p className="mt-6 text-xl max-w-xl">
+          <p className="mt-5 md:mt-6 text-base sm:text-lg md:text-xl max-w-xl">
             Discover thousands of amazing products at unbeatable prices.
           </p>
 
-          <button className="mt-8 bg-white text-blue-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-200">
+          <button className="mt-6 md:mt-8 bg-white text-blue-700 px-6 py-3 md:px-8 md:py-4 rounded-xl font-semibold hover:bg-gray-200">
             Shop Now
           </button>
 

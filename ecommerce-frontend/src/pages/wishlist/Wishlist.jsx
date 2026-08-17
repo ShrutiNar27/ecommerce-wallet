@@ -82,16 +82,14 @@ function Wishlist() {
   if (loading) {
 
     return (
-      <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 sm:py-10">
 
-        <h1 className="text-4xl font-bold mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
           My Wishlist
         </h1>
 
-        <div className="bg-white rounded-xl shadow-md p-10 text-center">
-
+        <div className="bg-white rounded-xl shadow-md p-8 sm:p-10 text-center">
           Loading Wishlist...
-
         </div>
 
       </div>
@@ -101,76 +99,71 @@ function Wishlist() {
 
   return (
 
-    <div className="max-w-7xl mx-auto px-6 py-10">
+    <div className="max-w-7xl mx-auto px-5 sm:px-6 py-8 sm:py-10">
 
-      <h1 className="text-4xl font-bold mb-8">
-
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
         My Wishlist
-
       </h1>
 
       {wishlist.items.length === 0 ? (
 
-        <div className="bg-white rounded-xl shadow-md p-16 text-center">
+        <div className="bg-white rounded-xl shadow-md p-10 sm:p-16 text-center">
 
-          <h2 className="text-2xl font-semibold">
-
+          <h2 className="text-xl sm:text-2xl font-semibold">
             Your Wishlist is Empty ❤️
-
           </h2>
 
           <p className="text-gray-500 mt-3">
-
             Browse products and add your favourite items.
-
           </p>
 
         </div>
 
       ) : (
 
-        <div className="space-y-6">
+        <div className="space-y-5 sm:space-y-6">
 
           {wishlist.items.map((item) => (
 
             <div
               key={item.productId}
-              className="bg-white rounded-xl shadow-md p-6 flex justify-between items-center"
+              className="bg-white rounded-xl shadow-md p-4 sm:p-6 flex flex-col lg:flex-row lg:justify-between lg:items-center gap-5"
             >
 
-              <div className="flex items-center gap-5">
+              {/* Product Info */}
+
+              <div className="flex items-center gap-4 sm:gap-5 min-w-0">
 
                 <img
                   src={`https://picsum.photos/120?random=${item.productId}`}
                   alt={item.productName}
-                  className="w-24 h-24 rounded-lg object-cover"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover flex-shrink-0"
                 />
 
-                <div>
+                <div className="min-w-0">
 
-                  <h2 className="text-xl font-semibold">
-
+                  <h2 className="text-lg sm:text-xl font-semibold break-words">
                     {item.productName}
-
                   </h2>
 
-                  <p className="text-blue-600 text-lg font-bold mt-2">
-
+                  <p className="text-blue-600 text-base sm:text-lg font-bold mt-2">
                     ₹{item.price}
-
                   </p>
 
                 </div>
 
               </div>
 
-              <div className="flex gap-3">
+
+              {/* Actions */}
+
+              <div className="flex flex-col sm:flex-row gap-3">
 
                 <button
                   onClick={() =>
                     handleMoveToCart(item.productId)
                   }
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className="w-full sm:w-auto bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700"
                 >
                   Move to Cart
                 </button>
@@ -179,7 +172,7 @@ function Wishlist() {
                   onClick={() =>
                     handleRemove(item.productId)
                   }
-                  className="flex items-center gap-2 text-red-500 hover:text-red-700"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 text-red-500 hover:text-red-700 px-4 py-3 border border-red-200 rounded-lg"
                 >
 
                   <Trash2 size={18} />

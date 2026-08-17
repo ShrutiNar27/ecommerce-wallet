@@ -82,7 +82,7 @@ function Checkout() {
   if (loading) {
 
     return (
-      <div className="text-center py-20 text-xl">
+      <div className="text-center py-16 sm:py-20 text-lg sm:text-xl">
         Loading Checkout...
       </div>
     );
@@ -92,9 +92,9 @@ function Checkout() {
   if (!cart || cart.items.length === 0) {
 
     return (
-      <div className="text-center py-20">
+      <div className="text-center px-6 py-16 sm:py-20">
 
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-2xl sm:text-3xl font-bold">
           Your Cart is Empty
         </h1>
 
@@ -109,21 +109,21 @@ function Checkout() {
 
   return (
 
-    <div className="max-w-6xl mx-auto px-6 py-10">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6 py-8 sm:py-10">
 
       {/* Page Title */}
 
-      <h1 className="text-4xl font-bold mb-8">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8">
         Checkout
       </h1>
 
       {/* Checkout Card */}
 
-      <div className="bg-white rounded-xl shadow-md p-8">
+      <div className="bg-white rounded-xl shadow-md p-5 sm:p-8">
 
         {/* Order Summary */}
 
-        <h2 className="text-2xl font-semibold mb-6">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-5 sm:mb-6">
           Order Summary
         </h2>
 
@@ -131,22 +131,22 @@ function Checkout() {
 
           <div
             key={item.productId}
-            className="flex justify-between border-b py-4"
+            className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-b py-4"
           >
 
             <div>
 
-              <h3 className="font-semibold">
+              <h3 className="font-semibold text-sm sm:text-base">
                 {item.productName}
               </h3>
 
-              <p className="text-gray-500">
+              <p className="text-gray-500 text-sm">
                 Quantity : {item.quantity}
               </p>
 
             </div>
 
-            <p className="font-bold">
+            <p className="font-bold text-sm sm:text-base">
               ₹{item.subtotal}
             </p>
 
@@ -156,7 +156,7 @@ function Checkout() {
 
         {/* Total */}
 
-        <div className="flex justify-between mt-8 text-2xl font-bold">
+        <div className="flex justify-between items-center mt-6 sm:mt-8 text-lg sm:text-2xl font-bold">
 
           <span>
             Total
@@ -170,19 +170,19 @@ function Checkout() {
 
         {/* Payment Method */}
 
-        <div className="mt-8">
+        <div className="mt-6 sm:mt-8">
 
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold mb-4">
             Payment Method
           </h2>
 
-          <div className="border-2 border-blue-600 bg-blue-50 rounded-xl p-5">
+          <div className="border-2 border-blue-600 bg-blue-50 rounded-xl p-4 sm:p-5">
 
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
 
               <div>
 
-                <h3 className="font-bold text-lg">
+                <h3 className="font-bold text-base sm:text-lg">
                   💳 ShopEase Wallet
                 </h3>
 
@@ -207,7 +207,7 @@ function Checkout() {
         <button
           onClick={handleWalletPayment}
           disabled={processing}
-          className={`w-full mt-8 text-white py-4 rounded-xl text-lg font-semibold ${
+          className={`w-full mt-6 sm:mt-8 text-white py-3 sm:py-4 rounded-xl text-base sm:text-lg font-semibold ${
             processing
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700"

@@ -34,14 +34,14 @@ const products = [
 
 function FeaturedProductsSection() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-20">
+    <section className="max-w-7xl mx-auto px-6 py-12 md:py-20">
 
       <SectionHeading
         title="Featured Products"
         subtitle="Explore our most popular products."
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8">
         {products.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}
